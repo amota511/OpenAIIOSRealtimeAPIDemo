@@ -14,7 +14,7 @@ class RootViewController: UIViewController {
     
     let startSessionButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("begin check-in", for: .normal)
+        button.setTitle("Start Check-In", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.setTitleColor(.systemBlue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -25,6 +25,26 @@ class RootViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }()
+    
+    private let tableItems = (1...8).map { "Item \($0)" }
+    
+    private let partialBlurTableView: UITableView = {
+        let tableView = UITableView()
+//        tableView.backgroundColor = .systemGray6
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.showsVerticalScrollIndicator = false
+        tableView.showsHorizontalScrollIndicator = false
+        return tableView
+    }()
+    
+    private let bottomBlurView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: .regular)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.alpha = 0.9
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        blurView.layer.zPosition = 0
+        return blurView
     }()
     
     override func viewDidLoad() {
@@ -62,6 +82,26 @@ class RootViewController: UIViewController {
             name: NSNotification.Name(rawValue: "UserStartToSpeek"),
             object: nil
         )
+        
+        view.addSubview(partialBlurTableView)
+        partialBlurTableView.delegate = self
+        partialBlurTableView.dataSource = self
+        NSLayoutConstraint.activate([
+            partialBlurTableView.topAnchor.constraint(equalTo: startSessionButton.bottomAnchor, constant: 20),
+            partialBlurTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            partialBlurTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            partialBlurTableView.heightAnchor.constraint(equalToConstant: 200)
+        ])
+        
+        view.addSubview(bottomBlurView)
+        NSLayoutConstraint.activate([
+            bottomBlurView.leadingAnchor.constraint(equalTo: partialBlurTableView.leadingAnchor),
+            bottomBlurView.trailingAnchor.constraint(equalTo: partialBlurTableView.trailingAnchor),
+            bottomBlurView.bottomAnchor.constraint(equalTo: partialBlurTableView.bottomAnchor),
+            bottomBlurView.heightAnchor.constraint(equalToConstant: 25)
+        ])
+        
+        partialBlurTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 25, right: 0)
     }
     
     @objc func clickSessionButton(_ sender: Any) {
@@ -85,11 +125,11 @@ class RootViewController: UIViewController {
     
     @objc func openAiStatusChanged(){
         if WebSocketManager.shared.connected_status == "not_connected" {
-            startSessionButton.setTitle("begin check-in", for: .normal)
+            startSessionButton.setTitle("Start Check-in", for: .normal)
         } else if WebSocketManager.shared.connected_status == "connecting" {
-            startSessionButton.setTitle("connecting...", for: .normal)
+            startSessionButton.setTitle("Connecting...", for: .normal)
         } else if WebSocketManager.shared.connected_status == "connected" {
-            startSessionButton.setTitle("End check-in", for: .normal)
+            startSessionButton.setTitle("End Check-in", for: .normal)
         } else {
             startSessionButton.setTitle("", for: .normal)
         }
@@ -116,5 +156,26 @@ class RootViewController: UIViewController {
         audioVolumeView.resetCirclesForUserSpeaking()
     }
     
+}
+
+extension RootViewController: UITableViewDelegate, UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tableItems.count
+    }
+
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cellId = "partialBlurCell"
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId)
+            ?? UITableViewCell(style: .default, reuseIdentifier: cellId)
+        cell.textLabel?.text = tableItems[indexPath.row]
+        return cell
+    }
+
 }
 

@@ -32,7 +32,15 @@ class MainTabBarController: UITabBarController {
             selectedImage: UIImage(systemName: "star.fill")
         )
         
-        // Assign both tabs to the UITabBarController
-        viewControllers = [checkInVC, progressVC]
+        // Third tab: Replace green VC with TalkThroughViewController
+        let talkThroughVC = TalkThroughViewController()
+        talkThroughVC.tabBarItem = UITabBarItem(
+            title: "Unblock",
+            image: UIImage(systemName: "hand.raised.slash"),
+            selectedImage: UIImage(systemName: "hand.raised.slash")
+        )
+        
+        // Assign all tabs to the UITabBarController
+        viewControllers = [checkInVC, progressVC, talkThroughVC]
     }
 } 
