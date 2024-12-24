@@ -1,5 +1,3 @@
-
-
 import UIKit
 
 class AudioVisualizerView: UIView {
@@ -16,7 +14,11 @@ class AudioVisualizerView: UIView {
         private func setupCircles() {
             for _ in 0..<4 {
                 let circleView = UIView()
-                circleView.backgroundColor = .black
+                if #available(iOS 13.0, *) {
+                    circleView.backgroundColor = .label
+                } else {
+                    circleView.backgroundColor = .black
+                }
                 circleView.layer.cornerRadius = 10
                 circleView.layer.masksToBounds = true
                 circleView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)

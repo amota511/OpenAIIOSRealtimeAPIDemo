@@ -4,6 +4,11 @@ class RootViewController: UIViewController {
 
     lazy var audioVolumeView = {
         let view = AudioVisualizerView(frame: CGRect(x: UIScreen.main.bounds.size.width/2-200/2, y: 30, width: 200, height: 100))
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .systemBackground
+        } else {
+            view.backgroundColor = .white
+        }
         return view
     }()
     
