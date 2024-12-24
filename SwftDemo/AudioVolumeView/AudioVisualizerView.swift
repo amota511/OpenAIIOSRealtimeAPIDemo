@@ -46,6 +46,48 @@ class AudioVisualizerView: UIView {
                 }
             }
         }
+        func animateAiSpeaking() {
+            // Use a dynamic system color for dark mode compatibility.
+            let color: UIColor
+            if #available(iOS 13.0, *) {
+                color = .systemBlue
+            } else {
+                color = .blue
+            }
+            
+            // Animate circles scaling slightly and turning blue.
+            UIView.animate(withDuration: 0.2, animations: {
+                for circleView in self.circleViews {
+                    circleView.backgroundColor = color
+                    circleView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                }
+            }) { _ in
+                // Once the scale-up animation finishes, return circles to normal size.
+                UIView.animate(withDuration: 0.2) {
+                    for circleView in self.circleViews {
+                        circleView.transform = .identity
+                    }
+                }
+            }
+        }
+        func resetCirclesForUserSpeaking() {
+            UIView.animate(withDuration: 0.2) {
+                if #available(iOS 12.0, *) {
+                    // Check the system’s current user interface style
+                    let isDarkMode = (self.traitCollection.userInterfaceStyle == .dark)
+                    for circleView in self.circleViews {
+                        circleView.backgroundColor = isDarkMode ? .white : .black
+                        circleView.transform = .identity
+                    }
+                } else {
+                    // Fallback for older iOS
+                    for circleView in self.circleViews {
+                        circleView.backgroundColor = .black
+                        circleView.transform = .identity
+                    }
+                }
+            }
+        }
         override func layoutSubviews() {
             super.layoutSubviews()
         }

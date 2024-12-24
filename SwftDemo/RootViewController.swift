@@ -50,6 +50,18 @@ class RootViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(openAiStatusChanged), name: NSNotification.Name(rawValue: "WebSocketManager_connected_status_changed"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showMonitorAudioDataView(notification:)), name: NSNotification.Name(rawValue: "showMonitorAudioDataView"), object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleAIIsPlayingAudio),
+            name: NSNotification.Name("AIIsPlayingAudioDelta"),
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleUserStartToSpeak),
+            name: NSNotification.Name(rawValue: "UserStartToSpeek"),
+            object: nil
+        )
     }
     
     @objc func clickSessionButton(_ sender: Any) {
@@ -92,6 +104,16 @@ class RootViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    @objc func handleAIIsPlayingAudio() {
+        // Trigger the visualizer animation
+        self.audioVolumeView.animateAiSpeaking()
+    }
+    
+    @objc func handleUserStartToSpeak() {
+        // Reset the circles to black/white
+        audioVolumeView.resetCirclesForUserSpeaking()
     }
     
 }
