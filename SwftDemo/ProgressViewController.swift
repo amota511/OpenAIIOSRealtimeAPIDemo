@@ -6,6 +6,6 @@ class ProgressViewController: UIViewController {
         super.viewDidLoad()
         
         // A background color so the screen isn't just blank
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .systemBlue
     }
 } 
