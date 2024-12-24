@@ -1,4 +1,3 @@
-
 import UIKit
 import IQKeyboardManagerSwift
 
@@ -14,8 +13,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
         
-        let vc = RootViewController()
-        window?.rootViewController = vc
+        let tabBarController = MainTabBarController()
+        
+        window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
         
         return true

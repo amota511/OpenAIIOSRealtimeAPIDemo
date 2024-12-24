@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		267894D1603CEEBE0EC013E3 /* libPods-SwftDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FEDBBE966F63984A7B1824DD /* libPods-SwftDemo.a */; };
+		A5406FC52D1A7BC900ACB75C /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5406FC42D1A7BC900ACB75C /* MainTabBarController.swift */; };
+		A5406FC72D1A7BD800ACB75C /* ProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5406FC62D1A7BD800ACB75C /* ProgressViewController.swift */; };
 		A9097BCC2CB7E6F100A5EE5A /* PlayAudioCotinuouslyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9097BCB2CB7E6F100A5EE5A /* PlayAudioCotinuouslyManager.swift */; };
 		A98CE87E2C64675A00489AD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A98CE87D2C64675A00489AD9 /* Assets.xcassets */; };
 		A98D89792CDC9DEA00389BF4 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98D89772CDC9DEA00389BF4 /* RootViewController.swift */; };
@@ -21,6 +23,8 @@
 
 /* Begin PBXFileReference section */
 		A1286BCB17E4CC4715B51B0F /* Pods-SwftDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwftDemo.release.xcconfig"; path = "Target Support Files/Pods-SwftDemo/Pods-SwftDemo.release.xcconfig"; sourceTree = "<group>"; };
+		A5406FC42D1A7BC900ACB75C /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		A5406FC62D1A7BD800ACB75C /* ProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressViewController.swift; sourceTree = "<group>"; };
 		A565352AF458640234995DA2 /* Pods-SwftDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwftDemo.debug.xcconfig"; path = "Target Support Files/Pods-SwftDemo/Pods-SwftDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		A9097BCB2CB7E6F100A5EE5A /* PlayAudioCotinuouslyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayAudioCotinuouslyManager.swift; sourceTree = "<group>"; };
 		A98CE87D2C64675A00489AD9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -106,6 +110,8 @@
 				A9AC386D2B04B35E0088D5BB /* AppDelegate.swift */,
 				A98D89772CDC9DEA00389BF4 /* RootViewController.swift */,
 				A9FFC45F2CB7B7C6006CBCB7 /* SwftDemo-Bridging-Header.h */,
+				A5406FC42D1A7BC900ACB75C /* MainTabBarController.swift */,
+				A5406FC62D1A7BD800ACB75C /* ProgressViewController.swift */,
 				A98CE87D2C64675A00489AD9 /* Assets.xcassets */,
 				A9FFC4642CB7B95F006CBCB7 /* WebSocket */,
 				A9FFC4662CB7BE39006CBCB7 /* RecordAudio */,
@@ -258,8 +264,10 @@
 			files = (
 				A9AC386E2B04B35E0088D5BB /* AppDelegate.swift in Sources */,
 				A9FFC4682CB7BEFD006CBCB7 /* RecordAudioManager.swift in Sources */,
+				A5406FC52D1A7BC900ACB75C /* MainTabBarController.swift in Sources */,
 				A9FFC45C2CB7B799006CBCB7 /* Extention+MBProgress.swift in Sources */,
 				A9097BCC2CB7E6F100A5EE5A /* PlayAudioCotinuouslyManager.swift in Sources */,
+				A5406FC72D1A7BD800ACB75C /* ProgressViewController.swift in Sources */,
 				A9FFC45B2CB7B799006CBCB7 /* MaciroDefine.swift in Sources */,
 				A9FFC4652CB7B95F006CBCB7 /* WebSocketManager.swift in Sources */,
 				A98D89792CDC9DEA00389BF4 /* RootViewController.swift in Sources */,
