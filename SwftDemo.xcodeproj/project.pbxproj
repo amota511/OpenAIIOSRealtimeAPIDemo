@@ -393,7 +393,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RJE854KM5C;
+				DEVELOPMENT_TEAM = NTBK7U36KR;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwftDemo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Ai_me;
@@ -408,7 +408,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmotayne.poof;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmotayne.poof2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "SwftDemo/SwftDemo-Bridging-Header.h";
@@ -427,7 +427,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RJE854KM5C;
+				DEVELOPMENT_TEAM = NTBK7U36KR;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwftDemo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Ai_me;
@@ -442,7 +442,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmotayne.poof;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmotayne.poof2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "SwftDemo/SwftDemo-Bridging-Header.h";
