@@ -44,6 +44,9 @@ class RootViewController: UIViewController {
         return view
     }()
     
+    // 1) Keep track of which rows have a "selected" bubble
+    private var selectedBubbles = Set<Int>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -200,12 +203,47 @@ extension RootViewController: UITableViewDelegate, UITableViewDataSource {
         let cellId = "partialBlurCell"
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId)
             ?? UITableViewCell(style: .default, reuseIdentifier: cellId)
+        
         cell.textLabel?.text = tableItems[indexPath.row]
+        
+        let BUBBLE_TAG = 9999
+        // Remove old bubble if reusing cell
+        if let existingBubble = cell.contentView.viewWithTag(BUBBLE_TAG) {
+            existingBubble.removeFromSuperview()
+        }
+        
+        let bubbleDiameter: CGFloat = 14
+        let bubbleView = UIView(frame: CGRect(
+            x: 0,
+            y: (50 - bubbleDiameter) / 2,
+            width: bubbleDiameter,
+            height: bubbleDiameter
+        ))
+        bubbleView.layer.cornerRadius = bubbleDiameter / 2
+        bubbleView.layer.borderWidth = 1
+        bubbleView.tag = BUBBLE_TAG
+        
+        // Check if bubble is selected
+        if selectedBubbles.contains(indexPath.row) {
+            bubbleView.backgroundColor = .systemGreen
+            bubbleView.layer.borderColor = UIColor.clear.cgColor
+        } else {
+            bubbleView.backgroundColor = .clear
+            bubbleView.layer.borderColor = UIColor.gray.cgColor
+        }
+        
+        cell.contentView.addSubview(bubbleView)
         return cell
     }
     
-    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        return nil
+    // Toggle the bubble when the user taps the cell
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if selectedBubbles.contains(indexPath.row) {
+            selectedBubbles.remove(indexPath.row)
+        } else {
+            selectedBubbles.insert(indexPath.row)
+        }
+        tableView.reloadRows(at: [indexPath], with: .none)
     }
 
 }
