@@ -27,7 +27,7 @@ class RootViewController: UIViewController {
         return view
     }()
     
-    private let tableItems = (1...8).map { "Item \($0)" }
+    private let tableItems = ["Gallon of water", "10K steps", "Eat clean", "Gym", "Meditate", "Alcohol", "Bad Sleep", "Overspend", "Sick day"]
     
     private let partialBlurTableView: UITableView = {
         let tableView = UITableView()
@@ -80,11 +80,23 @@ class RootViewController: UIViewController {
             object: nil
         )
         
+        let habitsLabel = UILabel()
+        habitsLabel.text = "Habits"
+        habitsLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        habitsLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(habitsLabel)
+        
+        NSLayoutConstraint.activate([
+            habitsLabel.topAnchor.constraint(equalTo: startSessionButton.bottomAnchor, constant: 20),
+            habitsLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            habitsLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+        ])
+        
         view.addSubview(partialBlurTableView)
         partialBlurTableView.delegate = self
         partialBlurTableView.dataSource = self
         NSLayoutConstraint.activate([
-            partialBlurTableView.topAnchor.constraint(equalTo: startSessionButton.bottomAnchor, constant: 20),
+            partialBlurTableView.topAnchor.constraint(equalTo: habitsLabel.bottomAnchor, constant: 8),
             partialBlurTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             partialBlurTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             partialBlurTableView.heightAnchor.constraint(equalToConstant: 200)
@@ -190,6 +202,10 @@ extension RootViewController: UITableViewDelegate, UITableViewDataSource {
             ?? UITableViewCell(style: .default, reuseIdentifier: cellId)
         cell.textLabel?.text = tableItems[indexPath.row]
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        return nil
     }
 
 }
