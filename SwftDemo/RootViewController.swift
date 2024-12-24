@@ -47,6 +47,9 @@ class RootViewController: UIViewController {
     // 1) Keep track of which rows have a "selected" bubble
     private var selectedBubbles = Set<Int>()
     
+    // 1) Add a new Set to remember which rows have a rotated chevron
+    private var rotatedChevrons = Set<Int>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -233,6 +236,41 @@ extension RootViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         cell.contentView.addSubview(bubbleView)
+        
+        // 2) Add the chevron icon on the right side
+        let CHEVRON_TAG = 9998
+        if let existingChevron = cell.contentView.viewWithTag(CHEVRON_TAG) {
+            existingChevron.removeFromSuperview()
+        }
+        
+        // Use systemName chevron.down
+        let chevronImageView = UIImageView(image: UIImage(systemName: "chevron.down"))
+        chevronImageView.translatesAutoresizingMaskIntoConstraints = false
+        chevronImageView.contentMode = .scaleAspectFit
+        chevronImageView.tag = CHEVRON_TAG
+
+        // 3) If this row is rotated, rotate the chevron 180 degrees
+        if rotatedChevrons.contains(indexPath.row) {
+            chevronImageView.transform = CGAffineTransform(rotationAngle: .pi)
+        } else {
+            chevronImageView.transform = .identity
+        }
+
+        // 4) Make chevron tappable
+        chevronImageView.isUserInteractionEnabled = true
+        let tapChevronGesture = UITapGestureRecognizer(target: self, action: #selector(handleChevronTap(_:)))
+        chevronImageView.addGestureRecognizer(tapChevronGesture)
+        chevronImageView.accessibilityHint = "\(indexPath.row)"
+
+        // 5) Increase chevron size
+        cell.contentView.addSubview(chevronImageView)
+        NSLayoutConstraint.activate([
+            chevronImageView.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor),
+            chevronImageView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -16),
+            chevronImageView.widthAnchor.constraint(equalToConstant: 24),
+            chevronImageView.heightAnchor.constraint(equalToConstant: 24),
+        ])
+        
         return cell
     }
     
@@ -246,5 +284,30 @@ extension RootViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.reloadRows(at: [indexPath], with: .none)
     }
 
+}
+
+// 6) Toggle chevron rotation
+extension RootViewController {
+    @objc private func handleChevronTap(_ gesture: UITapGestureRecognizer) {
+        guard let chevron = gesture.view as? UIImageView,
+              let rowString = chevron.accessibilityHint,
+              let row = Int(rowString) else {
+            return
+        }
+        
+        // Determine if it's currently rotated
+        let isRotated = rotatedChevrons.contains(row)
+        
+        // Animate the rotation transform in-place
+        UIView.animate(withDuration: 0.4) {
+            if isRotated {
+                self.rotatedChevrons.remove(row)
+                chevron.transform = .identity
+            } else {
+                self.rotatedChevrons.insert(row)
+                chevron.transform = CGAffineTransform(rotationAngle: .pi)
+            }
+        }
+    }
 }
 
