@@ -13,7 +13,6 @@
 		A98D89792CDC9DEA00389BF4 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98D89772CDC9DEA00389BF4 /* RootViewController.swift */; };
 		A9AA53092CC6363B00493649 /* AudioVisualizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AA53082CC6363B00493649 /* AudioVisualizerView.swift */; };
 		A9AC386E2B04B35E0088D5BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AC386D2B04B35E0088D5BB /* AppDelegate.swift */; };
-		A9AC387A2B04B35F0088D5BB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9AC38782B04B35F0088D5BB /* LaunchScreen.storyboard */; };
 		A9FFC45B2CB7B799006CBCB7 /* MaciroDefine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9FFC4582CB7B799006CBCB7 /* MaciroDefine.swift */; };
 		A9FFC45C2CB7B799006CBCB7 /* Extention+MBProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9FFC4592CB7B799006CBCB7 /* Extention+MBProgress.swift */; };
 		A9FFC4652CB7B95F006CBCB7 /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9FFC4632CB7B95F006CBCB7 /* WebSocketManager.swift */; };
@@ -29,7 +28,6 @@
 		A9AA53082CC6363B00493649 /* AudioVisualizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioVisualizerView.swift; sourceTree = "<group>"; };
 		A9AC386A2B04B35E0088D5BB /* SwftDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwftDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9AC386D2B04B35E0088D5BB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A9AC38792B04B35F0088D5BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A9AC387B2B04B35F0088D5BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9FFC4582CB7B799006CBCB7 /* MaciroDefine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaciroDefine.swift; sourceTree = "<group>"; };
 		A9FFC4592CB7B799006CBCB7 /* Extention+MBProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extention+MBProgress.swift"; sourceTree = "<group>"; };
@@ -106,7 +104,6 @@
 			isa = PBXGroup;
 			children = (
 				A9AC386D2B04B35E0088D5BB /* AppDelegate.swift */,
-				A9AC38782B04B35F0088D5BB /* LaunchScreen.storyboard */,
 				A98D89772CDC9DEA00389BF4 /* RootViewController.swift */,
 				A9FFC45F2CB7B7C6006CBCB7 /* SwftDemo-Bridging-Header.h */,
 				A98CE87D2C64675A00489AD9 /* Assets.xcassets */,
@@ -206,7 +203,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A9AC387A2B04B35F0088D5BB /* LaunchScreen.storyboard in Resources */,
 				A98CE87E2C64675A00489AD9 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -272,17 +268,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		A9AC38782B04B35F0088D5BB /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A9AC38792B04B35F0088D5BB /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		A9AC387C2B04B35F0088D5BB /* Debug */ = {
