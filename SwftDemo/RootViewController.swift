@@ -31,20 +31,17 @@ class RootViewController: UIViewController {
     
     private let partialBlurTableView: UITableView = {
         let tableView = UITableView()
-//        tableView.backgroundColor = .systemGray6
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
         return tableView
     }()
     
-    private let bottomBlurView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: .regular)
-        let blurView = UIVisualEffectView(effect: blurEffect)
-        blurView.alpha = 0.9
-        blurView.translatesAutoresizingMaskIntoConstraints = false
-        blurView.layer.zPosition = 0
-        return blurView
+    private let bottomBlurView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isUserInteractionEnabled = false
+        return view
     }()
     
     override func viewDidLoad() {
@@ -98,10 +95,28 @@ class RootViewController: UIViewController {
             bottomBlurView.leadingAnchor.constraint(equalTo: partialBlurTableView.leadingAnchor),
             bottomBlurView.trailingAnchor.constraint(equalTo: partialBlurTableView.trailingAnchor),
             bottomBlurView.bottomAnchor.constraint(equalTo: partialBlurTableView.bottomAnchor),
-            bottomBlurView.heightAnchor.constraint(equalToConstant: 25)
+            bottomBlurView.heightAnchor.constraint(equalToConstant: 50)
         ])
         
         partialBlurTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 25, right: 0)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        bottomBlurView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
+        
+        let gradient = CAGradientLayer()
+        gradient.frame = bottomBlurView.bounds
+        
+        gradient.colors = [
+            UIColor(white: 1.0, alpha: 0.2).cgColor,
+            UIColor(white: 1.0, alpha: 1.0).cgColor
+        ]
+        
+        gradient.startPoint = CGPoint(x: 0.5, y: 0.0)
+        gradient.endPoint   = CGPoint(x: 0.5, y: 1.0)
+        bottomBlurView.layer.addSublayer(gradient)
     }
     
     @objc func clickSessionButton(_ sender: Any) {
