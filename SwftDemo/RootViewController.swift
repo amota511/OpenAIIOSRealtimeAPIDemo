@@ -207,6 +207,8 @@ extension RootViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId)
             ?? UITableViewCell(style: .default, reuseIdentifier: cellId)
         
+        cell.selectionStyle = .none
+        
         cell.textLabel?.text = tableItems[indexPath.row]
         
         let BUBBLE_TAG = 9999
