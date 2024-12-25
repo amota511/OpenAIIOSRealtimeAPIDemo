@@ -128,8 +128,8 @@ class RootViewController: UIViewController {
         gradient.frame = bottomBlurView.bounds
         
         gradient.colors = [
-            UIColor(white: 1.0, alpha: 0.2).cgColor,
-            UIColor(white: 1.0, alpha: 1.0).cgColor
+            UIColor.systemBackground.withAlphaComponent(0.2).cgColor,
+            UIColor.systemBackground.withAlphaComponent(1.0).cgColor
         ]
         
         gradient.startPoint = CGPoint(x: 0.5, y: 0.0)
