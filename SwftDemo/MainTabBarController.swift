@@ -27,7 +27,7 @@ class MainTabBarController: UITabBarController {
         // Second tab: A new, blank ProgressViewController
         let progressVC = ProgressViewController()
         progressVC.tabBarItem = UITabBarItem(
-            title: "Progress",
+            title: "You",
             image: UIImage(systemName: "star.fill"),
             selectedImage: UIImage(systemName: "star.fill")
         )
