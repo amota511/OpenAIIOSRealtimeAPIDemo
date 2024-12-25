@@ -302,7 +302,7 @@ extension RootViewController {
         UIView.animate(withDuration: 0.4) {
             if isRotated {
                 self.rotatedChevrons.remove(row)
-                chevron.transform = .identity
+                chevron.transform = CGAffineTransform(rotationAngle: 2 * .pi)
             } else {
                 self.rotatedChevrons.insert(row)
                 chevron.transform = CGAffineTransform(rotationAngle: .pi)
