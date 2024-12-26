@@ -1,6 +1,10 @@
 import UIKit
+import StoreKit
 
-class UpsellViewController: UIViewController {
+class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPaymentTransactionObserver {
+    
+    private let productIdentifiers: Set<String> = ["monthly_20_v1"]
+    private var subscriptionProduct: SKProduct?
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -15,8 +19,7 @@ class UpsellViewController: UIViewController {
     private lazy var imageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
-        // Replace with your own image, e.g., iv.image = UIImage(named: "myUpsellImage")
-        iv.backgroundColor = .lightGray  // Placeholder background color
+        iv.image = UIImage(named: "upsell-image-3")
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
@@ -65,6 +68,12 @@ class UpsellViewController: UIViewController {
         view.addSubview(tryButton)
         view.addSubview(priceDetailsLabel)
         
+        // Register self as a payment queue observer
+        SKPaymentQueue.default().add(self)
+        
+        // Fetch product from the App Store
+        fetchSubscriptionProduct()
+        
         setupConstraints()
     }
     
@@ -89,7 +98,7 @@ class UpsellViewController: UIViewController {
             // “Try” button below check mark
             tryButton.topAnchor.constraint(equalTo: checkMarkLabel.bottomAnchor, constant: 24),
             tryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            tryButton.widthAnchor.constraint(equalToConstant: 200),
+            tryButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -32),
             tryButton.heightAnchor.constraint(equalToConstant: 48),
             
             // Small price label below the button
@@ -99,11 +108,76 @@ class UpsellViewController: UIViewController {
         ])
     }
     
-    @objc private func handleTrial() {
-        // TODO: Implement your logic for starting free trial or going to subscription flow
-        // For demonstration, dismiss the upsell and maybe show the MainTabBarController
-        dismiss(animated: true) {
-            // or handle any transitions here
+    // MARK: - Fetch subscription product
+    private func fetchSubscriptionProduct() {
+        guard SKPaymentQueue.canMakePayments() else {
+            print("User cannot make payments.")
+            return
         }
+        let request = SKProductsRequest(productIdentifiers: productIdentifiers)
+        request.delegate = self
+        request.start()
+    }
+    
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        if let product = response.products.first {
+            subscriptionProduct = product
+            print("Fetched product: \(product.localizedTitle) - \(product.price)")
+        } else {
+            print("No products found.")
+        }
+    }
+    
+    func request(_ request: SKRequest, didFailWithError error: Error) {
+        print("Product request error: \(error.localizedDescription)")
+    }
+    
+    @objc private func handleTrial() {
+        // For demonstration, start payment flow instead of dismissing
+        purchaseSubscription()
+    }
+    
+    // MARK: - Purchase flow
+    private func purchaseSubscription() {
+        guard let product = subscriptionProduct else {
+            print("Subscription product not available.")
+            showMainTabBar()
+            return
+        }
+        let payment = SKPayment(product: product)
+        SKPaymentQueue.default().add(payment)
+    }
+    
+    // MARK: - Transaction Observer
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        for transaction in transactions {
+            switch transaction.transactionState {
+            case .purchased:
+                SKPaymentQueue.default().finishTransaction(transaction)
+                showMainTabBar()
+            case .restored:
+                SKPaymentQueue.default().finishTransaction(transaction)
+                showMainTabBar()
+            case .failed:
+                SKPaymentQueue.default().finishTransaction(transaction)
+            case .purchasing, .deferred:
+                break
+            @unknown default:
+                break
+            }
+        }
+    }
+    
+    private func showMainTabBar() {
+        let mainTabBarController = MainTabBarController()
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first {
+            window.rootViewController = mainTabBarController
+            window.makeKeyAndVisible()
+        }
+    }
+    
+    deinit {
+        SKPaymentQueue.default().remove(self)
     }
 } 
