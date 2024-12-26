@@ -1,14 +1,57 @@
 import UIKit
 
+class PaddingTextField: UITextField {
+    let padding = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+
+    override func textRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
+    }
+
+    override func editingRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
+    }
+
+    override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
+    }
+}
+
 class OnboardingViewController: UIViewController {
 
     private var currentStep = 1
     private let totalSteps = 5
 
+    // 1) Add array to store text responses for each step
+    private var responses = Array(repeating: "", count: 5)
+
+    // An array of step-specific questions
+    private let stepPrompts = [
+        "Which goal or habit do you most want to focus on right now?",
+        "What usually stops you from following through on this goal?",
+        "How would you like the app to respond when you’re struggling?",
+        "When and how often would you like check-in(s)?",
+        "Imagine you’re looking back 30 days from now—how will you know you’ve made real progress?"
+    ]
+
+    // 2) Add a new title label (smaller and left-aligned)
+    private lazy var stepTitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.textAlignment = .left
+        label.text = stepPrompts[currentStep - 1]
+        // 1) Enable wrapping and multiple lines
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
     private lazy var backButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Back", for: .normal)
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(systemName: "arrow.backward"), for: .normal)
+        button.tintColor = .systemBlue
         button.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
+        
         return button
     }()
 
@@ -19,10 +62,20 @@ class OnboardingViewController: UIViewController {
         return progress
     }()
 
-    private lazy var textField: UITextField = {
-        let tf = UITextField()
+    private lazy var textField: PaddingTextField = {
+        let tf = PaddingTextField()
         tf.borderStyle = .roundedRect
-        tf.placeholder = "Enter step \(currentStep) info..."
+        // 2) Slightly lighter border
+        tf.layer.borderWidth = 1
+        tf.layer.borderColor = UIColor.gray.cgColor
+        tf.layer.cornerRadius = 8
+        tf.layer.masksToBounds = true
+        
+        tf.font = UIFont.systemFont(ofSize: 14)
+        tf.textAlignment = .left
+        tf.contentVerticalAlignment = .top
+        
+        tf.translatesAutoresizingMaskIntoConstraints = false
         return tf
     }()
 
@@ -38,16 +91,16 @@ class OnboardingViewController: UIViewController {
 
         view.backgroundColor = .systemBackground
 
-        // Add subviews
+        // 4) Add subviews
         view.addSubview(backButton)
         view.addSubview(progressView)
+        view.addSubview(stepTitleLabel)
         view.addSubview(textField)
         view.addSubview(nextButton)
 
         // Layout using Auto Layout
         backButton.translatesAutoresizingMaskIntoConstraints = false
         progressView.translatesAutoresizingMaskIntoConstraints = false
-        textField.translatesAutoresizingMaskIntoConstraints = false
         nextButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -58,37 +111,52 @@ class OnboardingViewController: UIViewController {
             progressView.leadingAnchor.constraint(equalTo: backButton.trailingAnchor, constant: 16),
             progressView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
 
-            textField.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 40),
-            textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            textField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            
+            // 3) Title label now has trailing anchor for wrapping
+            stepTitleLabel.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
+            stepTitleLabel.trailingAnchor.constraint(equalTo: textField.trailingAnchor),
+            stepTitleLabel.bottomAnchor.constraint(equalTo: textField.topAnchor, constant: -16),
+
+            // 4) Make the text field wider and taller
+            textField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            textField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            textField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
+            textField.heightAnchor.constraint(equalToConstant: 100),
+
+            // Keep “Next” button near the bottom-right of text field
             nextButton.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 16),
-            nextButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: 0),
+            nextButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor),
         ])
 
-        // Initial setup
+        // Initial update
         updateProgressBar()
     }
 
     private func updateProgressBar() {
-        // Fill progress based on the current step (e.g., step 3 → 3/5 = 0.6)
+        // Fill progress based on the current step
         let progressFraction = Float(currentStep) / Float(totalSteps)
         progressView.setProgress(progressFraction, animated: true)
-        textField.placeholder = "Enter step \(currentStep) info..."
-        
-        // Hide the back button on the first step
+
+        // 7) Use the array of prompts
+        stepTitleLabel.text = stepPrompts[currentStep - 1]
+        textField.text = responses[currentStep - 1]
+
+        // Hide back button if on first step
         backButton.isHidden = (currentStep == 1)
     }
 
     @objc private func handleBack() {
-        // Decrement step if possible
+        // 8) Save current text before going back
+        responses[currentStep - 1] = textField.text ?? ""
         guard currentStep > 1 else { return }
         currentStep -= 1
         updateProgressBar()
     }
 
     @objc private func handleNext() {
+        // 9) Save current text before going forward
+        responses[currentStep - 1] = textField.text ?? ""
         guard currentStep < totalSteps else {
+            // Move to MainTabBarController once user completes step 5
             let mainTabBarController = MainTabBarController()
             if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                let window = windowScene.windows.first {
