@@ -1,4 +1,5 @@
 import UIKit
+import StoreKit
 
 class PaddingTextField: UITextField {
     let padding = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
@@ -16,13 +17,17 @@ class PaddingTextField: UITextField {
     }
 }
 
-class OnboardingViewController: UIViewController {
+class OnboardingViewController: UIViewController, SKProductsRequestDelegate, SKPaymentTransactionObserver {
 
     private var currentStep = 1
     private let totalSteps = 5
 
     // 1) Add array to store text responses for each step
     private var responses = Array(repeating: "", count: 5)
+
+    // Subscription product
+    private var subscriptionProduct: SKProduct?
+    private let productIdentifiers: Set<String> = ["monthly_20_v1"]
 
     // An array of step-specific questions
     private let stepPrompts = [
@@ -91,6 +96,12 @@ class OnboardingViewController: UIViewController {
 
         view.backgroundColor = .systemBackground
 
+        // 3) Set up payment queue observer
+        SKPaymentQueue.default().add(self)
+
+        // 4) Fetch the product from the App Store
+        fetchSubscriptionProduct()
+
         // 4) Add subviews
         view.addSubview(backButton)
         view.addSubview(progressView)
@@ -131,6 +142,32 @@ class OnboardingViewController: UIViewController {
         updateProgressBar()
     }
 
+    // MARK: - Fetch subscription product
+    private func fetchSubscriptionProduct() {
+        guard SKPaymentQueue.canMakePayments() else {
+            print("User cannot make payments.")
+            return
+        }
+        let request = SKProductsRequest(productIdentifiers: productIdentifiers)
+        request.delegate = self
+        request.start()
+    }
+
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        // If there's a matching product, store a reference to it
+        if let product = response.products.first {
+            subscriptionProduct = product
+            print("Fetched product: \(product.localizedTitle) - \(product.price)")
+        } else {
+            print("No products found.")
+        }
+    }
+
+    // Handle errors
+    func request(_ request: SKRequest, didFailWithError error: Error) {
+        print("Product request error: \(error.localizedDescription)")
+    }
+
     private func updateProgressBar() {
         // Fill progress based on the current step
         let progressFraction = Float(currentStep) / Float(totalSteps)
@@ -153,19 +190,66 @@ class OnboardingViewController: UIViewController {
     }
 
     @objc private func handleNext() {
-        // 9) Save current text before going forward
         responses[currentStep - 1] = textField.text ?? ""
         guard currentStep < totalSteps else {
-            // Move to MainTabBarController once user completes step 5
-            let mainTabBarController = MainTabBarController()
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let window = windowScene.windows.first {
-                window.rootViewController = mainTabBarController
-                window.makeKeyAndVisible()
-            }
+            // Present the UpsellViewController modally
+            let upsellVC = UpsellViewController()
+            upsellVC.modalPresentationStyle = .fullScreen
+            present(upsellVC, animated: true)
             return
         }
         currentStep += 1
         updateProgressBar()
+    }
+
+    // MARK: - Purchase flow
+    private func purchaseSubscription() {
+        guard let product = subscriptionProduct else {
+            // We haven't successfully fetched the product or there's no product to buy
+            print("Subscription product not available.")
+            return
+        }
+        // Begin the official payment
+        let payment = SKPayment(product: product)
+        SKPaymentQueue.default().add(payment)
+    }
+
+    // MARK: - Transaction Observer
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        for transaction in transactions {
+            switch transaction.transactionState {
+            case .purchased:
+                // Payment was successful. Finish and show main tab bar
+                SKPaymentQueue.default().finishTransaction(transaction)
+                showMainTabBar()
+            case .restored:
+                // If you have a "Restore Purchases" flow
+                SKPaymentQueue.default().finishTransaction(transaction)
+                showMainTabBar()
+            case .failed:
+                // Payment was canceled or failed
+                SKPaymentQueue.default().finishTransaction(transaction)
+            case .purchasing, .deferred:
+                // We can ignore these states, or handle them as needed
+                break
+            @unknown default:
+                break
+            }
+        }
+    }
+
+    // MARK: - Show main UI
+    private func showMainTabBar() {
+        let mainTabBarController = MainTabBarController()
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first {
+            window.rootViewController = mainTabBarController
+            window.makeKeyAndVisible()
+        }
+    }
+
+    // 5) Remove observer when done
+    deinit {
+        SKPaymentQueue.default().remove(self)
     }
 } 
