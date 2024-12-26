@@ -13,9 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
         
-        let tabBarController = MainTabBarController()
-        
-        window?.rootViewController = tabBarController
+        window?.rootViewController = OnboardingViewController()
         window?.makeKeyAndVisible()
         
         return true

@@ -11,6 +11,7 @@
 		A5406FC52D1A7BC900ACB75C /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5406FC42D1A7BC900ACB75C /* MainTabBarController.swift */; };
 		A5406FC72D1A7BD800ACB75C /* ProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5406FC62D1A7BD800ACB75C /* ProgressViewController.swift */; };
 		A5406FC92D1B0D4900ACB75C /* TalkThroughViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5406FC82D1B0D4900ACB75C /* TalkThroughViewController.swift */; };
+		A5C226372D1DF6180023C824 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C226362D1DF6180023C824 /* OnboardingViewController.swift */; };
 		A9097BCC2CB7E6F100A5EE5A /* PlayAudioCotinuouslyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9097BCB2CB7E6F100A5EE5A /* PlayAudioCotinuouslyManager.swift */; };
 		A98CE87E2C64675A00489AD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A98CE87D2C64675A00489AD9 /* Assets.xcassets */; };
 		A98D89792CDC9DEA00389BF4 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98D89772CDC9DEA00389BF4 /* RootViewController.swift */; };
@@ -28,6 +29,7 @@
 		A5406FC62D1A7BD800ACB75C /* ProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressViewController.swift; sourceTree = "<group>"; };
 		A5406FC82D1B0D4900ACB75C /* TalkThroughViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkThroughViewController.swift; sourceTree = "<group>"; };
 		A565352AF458640234995DA2 /* Pods-SwftDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwftDemo.debug.xcconfig"; path = "Target Support Files/Pods-SwftDemo/Pods-SwftDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		A5C226362D1DF6180023C824 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		A9097BCB2CB7E6F100A5EE5A /* PlayAudioCotinuouslyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayAudioCotinuouslyManager.swift; sourceTree = "<group>"; };
 		A98CE87D2C64675A00489AD9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A98D89772CDC9DEA00389BF4 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				A9AC386D2B04B35E0088D5BB /* AppDelegate.swift */,
 				A98D89772CDC9DEA00389BF4 /* RootViewController.swift */,
 				A9FFC45F2CB7B7C6006CBCB7 /* SwftDemo-Bridging-Header.h */,
+				A5C226362D1DF6180023C824 /* OnboardingViewController.swift */,
 				A5406FC42D1A7BC900ACB75C /* MainTabBarController.swift */,
 				A5406FC82D1B0D4900ACB75C /* TalkThroughViewController.swift */,
 				A5406FC62D1A7BD800ACB75C /* ProgressViewController.swift */,
@@ -272,6 +275,7 @@
 				A9097BCC2CB7E6F100A5EE5A /* PlayAudioCotinuouslyManager.swift in Sources */,
 				A5406FC72D1A7BD800ACB75C /* ProgressViewController.swift in Sources */,
 				A9FFC45B2CB7B799006CBCB7 /* MaciroDefine.swift in Sources */,
+				A5C226372D1DF6180023C824 /* OnboardingViewController.swift in Sources */,
 				A9FFC4652CB7B95F006CBCB7 /* WebSocketManager.swift in Sources */,
 				A98D89792CDC9DEA00389BF4 /* RootViewController.swift in Sources */,
 				A5406FC92D1B0D4900ACB75C /* TalkThroughViewController.swift in Sources */,
