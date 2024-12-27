@@ -40,7 +40,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "1633C962-7AF9-4301-BE31-25092D3F70BC"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwftDemo/WebSocket/WebSocketManager.swift"
@@ -88,7 +88,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "C148973E-7698-4266-95BF-9F39111C9168"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwftDemo/WebSocket/WebSocketManager.swift"
@@ -528,7 +528,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "294"
             endingLineNumber = "294"
-            landmarkName = "tableView(_:cellForRowAt:)"
+            landmarkName = "startTimer()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -650,7 +650,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "146"
             endingLineNumber = "146"
-            landmarkName = "purchaseSubscription()"
+            landmarkName = "request(_:didFailWithError:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -658,7 +658,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "A1AF729A-E7E6-472E-B447-2E9B7A2BE149"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwftDemo/UpsellViewController.swift"
@@ -666,7 +666,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "135"
             endingLineNumber = "135"
-            landmarkName = "request(_:didFailWithError:)"
+            landmarkName = "fetchSubscriptionProduct()"
             landmarkType = "7">
             <Locations>
                <Location
@@ -699,6 +699,36 @@
                   endingLineNumber = "133"
                   offsetFromSymbolStart = "124">
                </Location>
+               <Location
+                  uuid = "A1AF729A-E7E6-472E-B447-2E9B7A2BE149 - e5bc6a3f717135ae"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SwftDemo.UpsellViewController.request(_: __C.SKRequest, didFailWithError: Swift.Error) -&gt; ()"
+                  moduleName = "SwftDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronmotayne/Desktop/src/Poof/SwftDemo/UpsellViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "137"
+                  endingLineNumber = "137"
+                  offsetFromSymbolStart = "124">
+               </Location>
+               <Location
+                  uuid = "A1AF729A-E7E6-472E-B447-2E9B7A2BE149 - 7412d0b1c5421f9e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SwftDemo.UpsellViewController.productsRequest(_: __C.SKProductsRequest, didReceive: __C.SKProductsResponse) -&gt; ()"
+                  moduleName = "SwftDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronmotayne/Desktop/src/Poof/SwftDemo/UpsellViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "136"
+                  endingLineNumber = "136"
+                  offsetFromSymbolStart = "92">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -714,7 +744,215 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "165"
             endingLineNumber = "165"
-            landmarkName = "paymentQueue(_:updatedTransactions:)"
+            landmarkName = "UpsellViewController"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E7FEBE74-1578-488E-B8A4-DE418B8F442E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SwftDemo/UpsellViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "286"
+            endingLineNumber = "286"
+            landmarkName = "sendOnboardingInfoToGPT()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "41827F12-86C2-4E07-B059-58DB9C13EF5E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SwftDemo/UpsellViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "288"
+            endingLineNumber = "288"
+            landmarkName = "sendOnboardingInfoToGPT()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C335D326-0604-4EEF-9388-945F43FCA392"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SwftDemo/UpsellViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "295"
+            endingLineNumber = "295"
+            landmarkName = "sendOnboardingInfoToGPT()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "C335D326-0604-4EEF-9388-945F43FCA392 - 4b81027dccd271c8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in SwftDemo.UpsellViewController.sendOnboardingInfoToGPT() -&gt; ()"
+                  moduleName = "SwftDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronmotayne/Desktop/src/Poof/SwftDemo/UpsellViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "295"
+                  endingLineNumber = "295"
+                  offsetFromSymbolStart = "468">
+               </Location>
+               <Location
+                  uuid = "C335D326-0604-4EEF-9388-945F43FCA392 - 4b81027dccd271c8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in SwftDemo.UpsellViewController.sendOnboardingInfoToGPT() -&gt; ()"
+                  moduleName = "SwftDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronmotayne/Desktop/src/Poof/SwftDemo/UpsellViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "295"
+                  endingLineNumber = "295"
+                  offsetFromSymbolStart = "508">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BBE6C82C-740A-4AF5-8A51-85602DB52EA5"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SwftDemo/UpsellViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "297"
+            endingLineNumber = "297"
+            landmarkName = "sendOnboardingInfoToGPT()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "BBE6C82C-740A-4AF5-8A51-85602DB52EA5 - 4b81027dccd2720a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in SwftDemo.UpsellViewController.sendOnboardingInfoToGPT() -&gt; ()"
+                  moduleName = "SwftDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronmotayne/Desktop/src/Poof/SwftDemo/UpsellViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "297"
+                  endingLineNumber = "297"
+                  offsetFromSymbolStart = "356">
+               </Location>
+               <Location
+                  uuid = "BBE6C82C-740A-4AF5-8A51-85602DB52EA5 - 4b81027dccd2720a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in SwftDemo.UpsellViewController.sendOnboardingInfoToGPT() -&gt; ()"
+                  moduleName = "SwftDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronmotayne/Desktop/src/Poof/SwftDemo/UpsellViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "297"
+                  endingLineNumber = "297"
+                  offsetFromSymbolStart = "396">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8A019D46-B7F9-4093-98A6-8225602844C0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SwftDemo/UpsellViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "307"
+            endingLineNumber = "307"
+            landmarkName = "sendOnboardingInfoToGPT()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "62004E7A-B3A9-40CE-BDF2-4435FC132DA7"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SwftDemo/UpsellViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "304"
+            endingLineNumber = "304"
+            landmarkName = "sendOnboardingInfoToGPT()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "62004E7A-B3A9-40CE-BDF2-4435FC132DA7 - 4b81027dccd27323"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in SwftDemo.UpsellViewController.sendOnboardingInfoToGPT() -&gt; ()"
+                  moduleName = "SwftDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronmotayne/Desktop/src/Poof/SwftDemo/UpsellViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "304"
+                  endingLineNumber = "304"
+                  offsetFromSymbolStart = "2488">
+               </Location>
+               <Location
+                  uuid = "62004E7A-B3A9-40CE-BDF2-4435FC132DA7 - 4b81027dccd27323"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in SwftDemo.UpsellViewController.sendOnboardingInfoToGPT() -&gt; ()"
+                  moduleName = "SwftDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronmotayne/Desktop/src/Poof/SwftDemo/UpsellViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "304"
+                  endingLineNumber = "304"
+                  offsetFromSymbolStart = "2528">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "87403FA9-856E-4ECE-9CA5-9A0F21751616"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SwftDemo/WebSocket/WebSocketManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
+            landmarkName = "handleRecivedMeaage(message_string:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -164,9 +164,11 @@ class OnboardingViewController: UIViewController {
     @objc private func handleNext() {
         responses[currentStep - 1] = textField.text ?? ""
         guard currentStep < totalSteps else {
-            // Present the UpsellViewController modally
             let upsellVC = UpsellViewController()
             upsellVC.modalPresentationStyle = .fullScreen
+
+            upsellVC.userResponses = responses
+
             present(upsellVC, animated: true)
             return
         }

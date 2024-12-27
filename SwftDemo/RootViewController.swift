@@ -61,6 +61,19 @@ class RootViewController: UIViewController {
         return button
     }()
     
+    // 1) Add properties for timer logic
+    private var sessionTimer: Timer?
+    private var remainingTime = 300 // 5:00 in seconds
+    
+    private let timerLabel: UILabel = {
+        let label = UILabel()
+        label.text = "5:00"
+        label.font = UIFont.boldSystemFont(ofSize: 80)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = GlobalColors.mainBackground
@@ -69,16 +82,6 @@ class RootViewController: UIViewController {
         view.addSubview(monitorAudioDataView)
         
         monitorAudioDataView.addSubview(audioVolumeView)
-        
-        startSessionButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        startSessionButton.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        startSessionButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        startSessionButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        monitorAudioDataView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80).isActive = true
-        monitorAudioDataView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        monitorAudioDataView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        monitorAudioDataView.heightAnchor.constraint(equalToConstant: 190).isActive = true
         
         startSessionButton.addTarget(self, action: #selector(clickSessionButton(_:)), for: .touchUpInside)
         
@@ -97,6 +100,12 @@ class RootViewController: UIViewController {
             object: nil
         )
         
+        view.addSubview(timerLabel)
+        NSLayoutConstraint.activate([
+            timerLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            timerLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: -80)
+        ])
+        
         let habitsLabel = UILabel()
         habitsLabel.text = "Habits"
         habitsLabel.font = UIFont.boldSystemFont(ofSize: 20)
@@ -104,11 +113,10 @@ class RootViewController: UIViewController {
         view.addSubview(habitsLabel)
         
         NSLayoutConstraint.activate([
-            habitsLabel.topAnchor.constraint(equalTo: startSessionButton.bottomAnchor, constant: 20),
+            habitsLabel.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: 8),
             habitsLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             habitsLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
-        
         habitsLabel.textColor = GlobalColors.primaryText
         
         view.addSubview(partialBlurTableView)
@@ -161,6 +169,22 @@ class RootViewController: UIViewController {
         } else {
             profileButton.addTarget(self, action: #selector(showFallbackMenu), for: .touchUpInside)
         }
+        
+        startSessionButton.removeFromSuperview()
+        view.addSubview(startSessionButton)
+        NSLayoutConstraint.activate([
+            startSessionButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            startSessionButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            startSessionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            startSessionButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
+        NSLayoutConstraint.activate([
+            monitorAudioDataView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
+            monitorAudioDataView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            monitorAudioDataView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            monitorAudioDataView.heightAnchor.constraint(equalToConstant: 190)
+        ])
     }
     
     override func viewDidLayoutSubviews() {
@@ -183,7 +207,15 @@ class RootViewController: UIViewController {
     
     @objc func clickSessionButton(_ sender: Any) {
         if WebSocketManager.shared.connected_status == "connected" {
-            let alertVC = UIAlertController(title: "The websocket is connected. Disconnect?", message: "", preferredStyle: .alert)
+            // 2) Just stop the timer but do NOT reset time here
+            sessionTimer?.invalidate()
+            sessionTimer = nil
+            
+            let alertVC = UIAlertController(
+                title: "The websocket is connected. Disconnect?",
+                message: "",
+                preferredStyle: .alert
+            )
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
             let confirAction = UIAlertAction(title: "Confirm", style: .default) { alert in
                 WebSocketManager.shared.audio_String = ""
@@ -196,16 +228,25 @@ class RootViewController: UIViewController {
             alertVC.addAction(confirAction)
             getCurrentVc().present(alertVC, animated: true)
         } else {
+            // 3) Remove auto-start here
+            // startTimer() <-- removed
             WebSocketManager.shared.connectWebSocketOfOpenAi()
         }
     }
     
-    @objc func openAiStatusChanged(){
+    @objc func openAiStatusChanged() {
         if WebSocketManager.shared.connected_status == "not_connected" {
             startSessionButton.setTitle("Start Check-in", for: .normal)
         } else if WebSocketManager.shared.connected_status == "connecting" {
             startSessionButton.setTitle("Connecting...", for: .normal)
         } else if WebSocketManager.shared.connected_status == "connected" {
+            // Reset the timer when the connection is established
+            sessionTimer?.invalidate()
+            sessionTimer = nil
+            remainingTime = 300
+            timerLabel.text = "5:00"
+
+            startTimer()  
             startSessionButton.setTitle("End Check-in", for: .normal)
         } else {
             startSessionButton.setTitle("", for: .normal)
@@ -247,6 +288,26 @@ class RootViewController: UIViewController {
         present(alertController, animated: true)
     }
     
+    // 6) Timer utility functions
+    private func startTimer() {
+        sessionTimer?.invalidate()
+        sessionTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self,
+                                            selector: #selector(updateTimer),
+                                            userInfo: nil,
+                                            repeats: true)
+    }
+
+    @objc private func updateTimer() {
+        if remainingTime > 0 {
+            remainingTime -= 1
+            let minutes = remainingTime / 60
+            let seconds = remainingTime % 60
+            timerLabel.text = String(format: "%d:%02d", minutes, seconds)
+        } else {
+            sessionTimer?.invalidate()
+            sessionTimer = nil
+        }
+    }
 }
 
 extension RootViewController: UITableViewDelegate, UITableViewDataSource {
