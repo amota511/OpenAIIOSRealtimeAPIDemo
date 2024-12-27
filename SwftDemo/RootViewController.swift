@@ -120,7 +120,7 @@ class RootViewController: UIViewController {
             bottomBlurView.heightAnchor.constraint(equalToConstant: 50)
         ])
         
-        partialBlurTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 25, right: 0)
+        partialBlurTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
     }
     
     override func viewDidLayoutSubviews() {
@@ -132,8 +132,8 @@ class RootViewController: UIViewController {
         gradient.frame = bottomBlurView.bounds
         
         gradient.colors = [
-            UIColor.systemBackground.withAlphaComponent(0.2).cgColor,
-            UIColor.systemBackground.withAlphaComponent(1.0).cgColor
+            GlobalColors.mainBackground.withAlphaComponent(0.2).cgColor,
+            GlobalColors.mainBackground.withAlphaComponent(1.0).cgColor
         ]
         
         gradient.startPoint = CGPoint(x: 0.5, y: 0.0)
