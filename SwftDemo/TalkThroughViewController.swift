@@ -34,6 +34,7 @@ class TalkThroughViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        overrideUserInterfaceStyle = .light
         view.backgroundColor = GlobalColors.mainBackground
         
         // Add the label as a subview (sticky header)
@@ -69,6 +70,10 @@ class TalkThroughViewController: UIViewController, UITableViewDelegate, UITableV
         
         // subHeaderLabel for details
         subHeaderLabel.textColor = GlobalColors.secondaryText
+        
+        tableView.backgroundColor = GlobalColors.mainBackground
+        
+        tableView.allowsSelection = false
     }
     
     // MARK: - UITableViewDataSource
@@ -83,6 +88,8 @@ class TalkThroughViewController: UIViewController, UITableViewDelegate, UITableV
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId)
             ?? UITableViewCell(style: .default, reuseIdentifier: cellId)
         cell.textLabel?.text = howTos[indexPath.row]
+        cell.backgroundColor = GlobalColors.mainBackground
+        cell.textLabel?.textColor = GlobalColors.primaryText
         return cell
     }
     

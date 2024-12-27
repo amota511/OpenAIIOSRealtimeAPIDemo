@@ -31,6 +31,7 @@ class ProgressViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Set up everything
+        overrideUserInterfaceStyle = .light
         setupViews()
         setupScrollView()
         setupTables()
@@ -69,9 +70,9 @@ class ProgressViewController: UIViewController {
             titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             
-            segmentedControl.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            segmentedControl.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
             segmentedControl.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            segmentedControl.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -16)
+            segmentedControl.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0)
         ])
         
         // Position the scrollView below that container, pinned to bottom
@@ -111,6 +112,14 @@ class ProgressViewController: UIViewController {
         scrollView.addSubview(daysTableView)
         scrollView.addSubview(weeksTableView)
         scrollView.addSubview(monthsTableView)
+        
+        daysTableView.backgroundColor   = GlobalColors.mainBackground
+        weeksTableView.backgroundColor  = GlobalColors.mainBackground
+        monthsTableView.backgroundColor = GlobalColors.mainBackground
+
+        daysTableView.allowsSelection   = false
+        weeksTableView.allowsSelection  = false
+        monthsTableView.allowsSelection = false
     }
     
     override func viewDidLayoutSubviews() {
@@ -192,6 +201,8 @@ extension ProgressViewController: UITableViewDataSource, UITableViewDelegate {
         Replace it with whatever text or controls you need. 
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
         """
+        cell.backgroundColor = GlobalColors.mainBackground
+        cell.textLabel?.textColor = GlobalColors.primaryText
         return cell
     }
 }
