@@ -50,6 +50,17 @@ class RootViewController: UIViewController {
     // 1) Add a new Set to remember which rows have a rotated chevron
     private var rotatedChevrons = Set<Int>()
     
+    private let profileButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "person.crop.circle"), for: .normal)
+        button.tintColor = GlobalColors.primaryText
+        button.contentHorizontalAlignment = .fill
+        button.contentVerticalAlignment = .fill
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = GlobalColors.mainBackground
@@ -121,6 +132,35 @@ class RootViewController: UIViewController {
         ])
         
         partialBlurTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
+        
+        view.addSubview(profileButton)
+        NSLayoutConstraint.activate([
+            profileButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            profileButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            profileButton.widthAnchor.constraint(equalToConstant: 45),
+            profileButton.heightAnchor.constraint(equalToConstant: 45)
+        ])
+        
+        profileButton.tintColor = UIColor(
+            red: 80.0/255.0,
+            green: 80.0/255.0,
+            blue: 80.0/255.0,
+            alpha: 1.0
+        )
+        
+        if #available(iOS 14.0, *) {
+            let feedbackAction = UIAction(title: "Leave feedback") { _ in
+                // Handle feedback
+            }
+            let logoutAction = UIAction(title: "Log out", attributes: .destructive) { _ in
+                // Handle log out
+            }
+            let menu = UIMenu(title: "", children: [feedbackAction, logoutAction])
+            profileButton.menu = menu
+            profileButton.showsMenuAsPrimaryAction = true
+        } else {
+            profileButton.addTarget(self, action: #selector(showFallbackMenu), for: .touchUpInside)
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -191,6 +231,20 @@ class RootViewController: UIViewController {
     @objc func handleUserStartToSpeak() {
         // Reset the circles to black/white
         audioVolumeView.resetCirclesForUserSpeaking()
+    }
+    
+    @objc private func showFallbackMenu() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let feedbackAction = UIAlertAction(title: "Leave feedback", style: .default) { _ in
+            // Handle feedback
+        }
+        let logoutAction = UIAlertAction(title: "Log out", style: .destructive) { _ in
+            // Handle log out
+        }
+        alertController.addAction(feedbackAction)
+        alertController.addAction(logoutAction)
+        // If on iPad, configure popover sourceRect/sourceView for a popover
+        present(alertController, animated: true)
     }
     
 }
