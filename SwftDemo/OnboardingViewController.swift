@@ -43,13 +43,14 @@ class OnboardingViewController: UIViewController {
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = GlobalColors.primaryText
         return label
     }()
 
     private lazy var backButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(systemName: "arrow.backward"), for: .normal)
-        button.tintColor = .systemBlue
+        button.tintColor = GlobalColors.primaryButton
         button.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
         
         return button
@@ -57,7 +58,7 @@ class OnboardingViewController: UIViewController {
 
     private lazy var progressView: UIProgressView = {
         let progress = UIProgressView(progressViewStyle: .default)
-        progress.progressTintColor = .systemBlue
+        progress.progressTintColor = GlobalColors.primaryButton
         progress.trackTintColor = .lightGray
         return progress
     }()
@@ -76,6 +77,8 @@ class OnboardingViewController: UIViewController {
         tf.contentVerticalAlignment = .top
         
         tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.backgroundColor = GlobalColors.accentBackground
+        tf.textColor = GlobalColors.primaryText
         return tf
     }()
 
@@ -83,13 +86,17 @@ class OnboardingViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Next", for: .normal)
         button.addTarget(self, action: #selector(handleNext), for: .touchUpInside)
+        button.backgroundColor = GlobalColors.primaryButton
+        button.tintColor = .white
+        button.layer.cornerRadius = 8
+        button.layer.masksToBounds = true
         return button
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = GlobalColors.mainBackground
 
         // 4) Add subviews
         view.addSubview(backButton)
@@ -122,9 +129,11 @@ class OnboardingViewController: UIViewController {
             textField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
             textField.heightAnchor.constraint(equalToConstant: 100),
 
-            // Keep “Next” button near the bottom-right of text field
+            // 5) Center the “Next” button to match text field’s width
             nextButton.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 16),
-            nextButton.trailingAnchor.constraint(equalTo: textField.trailingAnchor),
+            nextButton.centerXAnchor.constraint(equalTo: textField.centerXAnchor),
+            nextButton.widthAnchor.constraint(equalTo: textField.widthAnchor),
+            nextButton.heightAnchor.constraint(equalToConstant: 60),
         ])
 
         // Initial update

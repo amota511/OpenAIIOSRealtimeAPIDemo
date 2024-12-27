@@ -4,11 +4,8 @@ class RootViewController: UIViewController {
 
     lazy var audioVolumeView = {
         let view = AudioVisualizerView(frame: CGRect(x: UIScreen.main.bounds.size.width/2-200/2, y: 30, width: 200, height: 100))
-        if #available(iOS 13.0, *) {
-            view.backgroundColor = .systemBackground
-        } else {
-            view.backgroundColor = .white
-        }
+
+        view.backgroundColor = .clear
         return view
     }()
     
@@ -16,7 +13,10 @@ class RootViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Start Check-In", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        button.setTitleColor(.systemBlue, for: .normal)
+        button.layer.cornerRadius = 8
+        button.layer.masksToBounds = true
+        button.backgroundColor = GlobalColors.primaryButton
+        button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -52,7 +52,7 @@ class RootViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = GlobalColors.mainBackground
         
         view.addSubview(startSessionButton)
         view.addSubview(monitorAudioDataView)
@@ -98,6 +98,8 @@ class RootViewController: UIViewController {
             habitsLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
         
+        habitsLabel.textColor = GlobalColors.primaryText
+        
         view.addSubview(partialBlurTableView)
         partialBlurTableView.delegate = self
         partialBlurTableView.dataSource = self
@@ -107,6 +109,8 @@ class RootViewController: UIViewController {
             partialBlurTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             partialBlurTableView.heightAnchor.constraint(equalToConstant: 200)
         ])
+        
+        partialBlurTableView.backgroundColor = GlobalColors.mainBackground
         
         view.addSubview(bottomBlurView)
         NSLayoutConstraint.activate([
@@ -210,6 +214,9 @@ extension RootViewController: UITableViewDelegate, UITableViewDataSource {
         cell.selectionStyle = .none
         
         cell.textLabel?.text = tableItems[indexPath.row]
+        cell.textLabel?.textColor = GlobalColors.primaryText
+        
+        cell.backgroundColor = GlobalColors.mainBackground
         
         let BUBBLE_TAG = 9999
         // Remove old bubble if reusing cell
@@ -272,6 +279,8 @@ extension RootViewController: UITableViewDelegate, UITableViewDataSource {
             chevronImageView.widthAnchor.constraint(equalToConstant: 24),
             chevronImageView.heightAnchor.constraint(equalToConstant: 24),
         ])
+        
+        chevronImageView.tintColor = GlobalColors.primaryText
         
         return cell
     }

@@ -9,6 +9,7 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "We want you to try Reason.ai for free."
+        label.textColor = GlobalColors.highlightText
         label.numberOfLines = 2
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 24)
@@ -39,7 +40,7 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         let button = UIButton(type: .system)
         button.setTitle("Try for $0.00", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        button.backgroundColor = .systemBlue
+        button.backgroundColor = GlobalColors.primaryButton
         button.tintColor = .white
         button.layer.cornerRadius = 8
         button.layer.masksToBounds = true
@@ -60,7 +61,7 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = GlobalColors.mainBackground
         
         view.addSubview(titleLabel)
         view.addSubview(imageView)

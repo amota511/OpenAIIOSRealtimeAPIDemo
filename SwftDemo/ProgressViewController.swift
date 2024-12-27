@@ -34,10 +34,12 @@ class ProgressViewController: UIViewController {
         setupViews()
         setupScrollView()
         setupTables()
+        
+        view.backgroundColor = GlobalColors.mainBackground
     }
     
     private func setupViews() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = GlobalColors.mainBackground
         
         // Create a container for the label + tab control
         let containerView = UIView()
@@ -50,6 +52,7 @@ class ProgressViewController: UIViewController {
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textColor = GlobalColors.primaryText
         containerView.addSubview(titleLabel)
         
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false

@@ -11,7 +11,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         initIQKeyboardManagerSwift()
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.backgroundColor = .white
+        window?.backgroundColor = GlobalColors.mainBackground
         
         window?.rootViewController = OnboardingViewController()
         window?.makeKeyAndVisible()

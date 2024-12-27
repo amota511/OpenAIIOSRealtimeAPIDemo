@@ -544,7 +544,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "148"
             endingLineNumber = "148"
-            landmarkName = "handleBack()"
+            landmarkName = "updateProgressBar()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -560,7 +560,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "151"
             endingLineNumber = "151"
-            landmarkName = "handleBack()"
+            landmarkName = "updateProgressBar()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -648,8 +648,8 @@
             filePath = "SwftDemo/UpsellViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
             landmarkName = "purchaseSubscription()"
             landmarkType = "7">
          </BreakpointContent>
@@ -664,24 +664,56 @@
             filePath = "SwftDemo/UpsellViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
+            startingLineNumber = "133"
+            endingLineNumber = "133"
             landmarkName = "request(_:didFailWithError:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A1AF729A-E7E6-472E-B447-2E9B7A2BE149 - e5bc6a3f7171352a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SwftDemo.UpsellViewController.request(_: __C.SKRequest, didFailWithError: Swift.Error) -&gt; ()"
+                  moduleName = "SwftDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronmotayne/Desktop/src/Poof/SwftDemo/UpsellViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "133"
+                  endingLineNumber = "133"
+                  offsetFromSymbolStart = "624">
+               </Location>
+               <Location
+                  uuid = "A1AF729A-E7E6-472E-B447-2E9B7A2BE149 - e5bc6a3f7171352a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SwftDemo.UpsellViewController.request(_: __C.SKRequest, didFailWithError: Swift.Error) -&gt; ()"
+                  moduleName = "SwftDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronmotayne/Desktop/src/Poof/SwftDemo/UpsellViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "133"
+                  endingLineNumber = "133"
+                  offsetFromSymbolStart = "124">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "3943516A-5051-4BD5-8175-0712BEA6CCC9"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwftDemo/UpsellViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
             landmarkName = "paymentQueue(_:updatedTransactions:)"
             landmarkType = "7">
          </BreakpointContent>

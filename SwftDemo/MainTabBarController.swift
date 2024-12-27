@@ -5,15 +5,17 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = GlobalColors.mainBackground
+        
         // Customize tab bar appearance to have a raised background color
         if #available(iOS 15.0, *) {
             let appearance = UITabBarAppearance()
             appearance.configureWithDefaultBackground()
-            appearance.backgroundColor = .systemGray6
+            appearance.backgroundColor = GlobalColors.accentBackground
             tabBar.standardAppearance = appearance
             tabBar.scrollEdgeAppearance = appearance
         } else {
-            tabBar.barTintColor = .systemGray6
+            tabBar.barTintColor = GlobalColors.accentBackground
         }
         
         // First tab: Your existing RootViewController
@@ -42,5 +44,7 @@ class MainTabBarController: UITabBarController {
         
         // Assign all tabs to the UITabBarController
         viewControllers = [checkInVC, progressVC, talkThroughVC]
+        
+        tabBar.tintColor = GlobalColors.primaryButton
     }
 } 

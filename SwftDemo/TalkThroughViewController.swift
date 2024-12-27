@@ -34,7 +34,7 @@ class TalkThroughViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = GlobalColors.mainBackground
         
         // Add the label as a subview (sticky header)
         view.addSubview(headerLabel)
@@ -63,6 +63,12 @@ class TalkThroughViewController: UIViewController, UITableViewDelegate, UITableV
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        
+        // headerLabel
+        headerLabel.textColor = GlobalColors.primaryText
+        
+        // subHeaderLabel for details
+        subHeaderLabel.textColor = GlobalColors.secondaryText
     }
     
     // MARK: - UITableViewDataSource

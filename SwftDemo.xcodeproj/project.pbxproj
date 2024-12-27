@@ -14,6 +14,7 @@
 		A5C226372D1DF6180023C824 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C226362D1DF6180023C824 /* OnboardingViewController.swift */; };
 		A5C226392D1E0CF10023C824 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C226382D1E0CF10023C824 /* StoreKit.framework */; };
 		A5C2263B2D1E13CE0023C824 /* UpsellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C2263A2D1E13CE0023C824 /* UpsellViewController.swift */; };
+		A5D39F2C2D1E2DF300F34ABB /* GlobalColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D39F2B2D1E2DF300F34ABB /* GlobalColors.swift */; };
 		A9097BCC2CB7E6F100A5EE5A /* PlayAudioCotinuouslyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9097BCB2CB7E6F100A5EE5A /* PlayAudioCotinuouslyManager.swift */; };
 		A98CE87E2C64675A00489AD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A98CE87D2C64675A00489AD9 /* Assets.xcassets */; };
 		A98D89792CDC9DEA00389BF4 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98D89772CDC9DEA00389BF4 /* RootViewController.swift */; };
@@ -35,6 +36,7 @@
 		A5C226382D1E0CF10023C824 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		A5C2263A2D1E13CE0023C824 /* UpsellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpsellViewController.swift; sourceTree = "<group>"; };
 		A5D39F2A2D1E27A400F34ABB /* Subs.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Subs.storekit; sourceTree = "<group>"; };
+		A5D39F2B2D1E2DF300F34ABB /* GlobalColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalColors.swift; sourceTree = "<group>"; };
 		A9097BCB2CB7E6F100A5EE5A /* PlayAudioCotinuouslyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayAudioCotinuouslyManager.swift; sourceTree = "<group>"; };
 		A98CE87D2C64675A00489AD9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A98D89772CDC9DEA00389BF4 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				A98D89772CDC9DEA00389BF4 /* RootViewController.swift */,
 				A9FFC45F2CB7B7C6006CBCB7 /* SwftDemo-Bridging-Header.h */,
 				A5C226362D1DF6180023C824 /* OnboardingViewController.swift */,
+				A5D39F2B2D1E2DF300F34ABB /* GlobalColors.swift */,
 				A5C2263A2D1E13CE0023C824 /* UpsellViewController.swift */,
 				A5406FC42D1A7BC900ACB75C /* MainTabBarController.swift */,
 				A5406FC82D1B0D4900ACB75C /* TalkThroughViewController.swift */,
@@ -289,6 +292,7 @@
 				A98D89792CDC9DEA00389BF4 /* RootViewController.swift in Sources */,
 				A5C2263B2D1E13CE0023C824 /* UpsellViewController.swift in Sources */,
 				A5406FC92D1B0D4900ACB75C /* TalkThroughViewController.swift in Sources */,
+				A5D39F2C2D1E2DF300F34ABB /* GlobalColors.swift in Sources */,
 				A9AA53092CC6363B00493649 /* AudioVisualizerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
