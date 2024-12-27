@@ -34,6 +34,7 @@
 		A5C226362D1DF6180023C824 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		A5C226382D1E0CF10023C824 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		A5C2263A2D1E13CE0023C824 /* UpsellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpsellViewController.swift; sourceTree = "<group>"; };
+		A5D39F2A2D1E27A400F34ABB /* Subs.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Subs.storekit; sourceTree = "<group>"; };
 		A9097BCB2CB7E6F100A5EE5A /* PlayAudioCotinuouslyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayAudioCotinuouslyManager.swift; sourceTree = "<group>"; };
 		A98CE87D2C64675A00489AD9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A98D89772CDC9DEA00389BF4 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -99,6 +100,7 @@
 		A9AC38612B04B35D0088D5BB = {
 			isa = PBXGroup;
 			children = (
+				A5D39F2A2D1E27A400F34ABB /* Subs.storekit */,
 				A9AC386C2B04B35E0088D5BB /* SwftDemo */,
 				A9AC386B2B04B35E0088D5BB /* Products */,
 				7214546A0BCEEC157F05F467 /* Pods */,
@@ -431,7 +433,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmotayne.poof2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -468,7 +470,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmotayne.poof2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

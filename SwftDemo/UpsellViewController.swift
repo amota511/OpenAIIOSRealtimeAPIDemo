@@ -3,7 +3,7 @@ import StoreKit
 
 class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     
-    private let productIdentifiers: Set<String> = ["monthly_20_v1"]
+    private let productIdentifiers: Set<String> = ["monthly_20_v1", "Monthly-20"]
     private var subscriptionProduct: SKProduct?
     
     private lazy var titleLabel: UILabel = {

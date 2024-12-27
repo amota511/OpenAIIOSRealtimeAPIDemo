@@ -1,0 +1,111 @@
+{
+  "identifier" : "223D3D05",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6739816189",
+    "_developerTeamID" : "NTBK7U36KR",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 756950951.19744301,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21613236",
+      "localizations" : [
+
+      ],
+      "name" : "Monthly Subscription",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+            {
+              "internalID" : "84C007AE",
+              "numberOfPeriods" : 1,
+              "offerID" : "Free_Trial_3_Days_Monthly",
+              "paymentMode" : "free",
+              "referenceName" : "Free 3-Day Trial - Monthly",
+              "subscriptionPeriod" : "P3D"
+            }
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "19.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6739891026",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "A month of subscription for Reason",
+              "displayName" : "Monthly Subscription",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "monthly_20_v1",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Monthly-20",
+          "subscriptionGroupID" : "21613236",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}
