@@ -40,7 +40,7 @@ class TalkThroughViewController: UIViewController, UITableViewDelegate, UITableV
         // Add the label as a subview (sticky header)
         view.addSubview(headerLabel)
         NSLayoutConstraint.activate([
-            headerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            headerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             headerLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             headerLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])

@@ -20,7 +20,7 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
     private lazy var imageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
-        iv.image = UIImage(named: "upsell-image-3")
+        iv.image = UIImage(named: "upsell-image-5")
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
