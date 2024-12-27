@@ -21,6 +21,8 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
         iv.image = UIImage(named: "upsell-image-5")
+        iv.layer.cornerRadius = 200
+        iv.clipsToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
@@ -81,7 +83,7 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             // Title at the top
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
