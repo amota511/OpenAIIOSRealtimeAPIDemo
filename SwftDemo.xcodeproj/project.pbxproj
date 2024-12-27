@@ -426,7 +426,8 @@
 				DEVELOPMENT_TEAM = NTBK7U36KR;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwftDemo/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Poof;
+				INFOPLIST_KEY_CFBundleDisplayName = Reason;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "App Need";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -437,7 +438,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmotayne.poof2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -463,7 +464,8 @@
 				DEVELOPMENT_TEAM = NTBK7U36KR;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwftDemo/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Poof;
+				INFOPLIST_KEY_CFBundleDisplayName = Reason;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "App Need";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -474,7 +476,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmotayne.poof2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
