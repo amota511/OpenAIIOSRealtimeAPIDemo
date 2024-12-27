@@ -272,7 +272,6 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         let json: [String: Any] = [
             "model": "o1-mini",
             "messages": [
-//                ["role": "system", "content": "You are a helpful assistant."],
                 ["role": "user", "content": prompt]
             ]
         ]
