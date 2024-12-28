@@ -28,6 +28,12 @@ class ProgressViewController: UIViewController,
         view.backgroundColor = GlobalColors.mainBackground
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Each time the user re-enters this view, reload stories
+        loadStoriesFromUserDefaults()
+    }
+    
     // 3) Decode from UserDefaults and reload table
     private func loadStoriesFromUserDefaults() {
         let defaults = UserDefaults.standard
@@ -91,6 +97,17 @@ class ProgressViewController: UIViewController,
         tableView.delegate   = self
         tableView.backgroundColor = GlobalColors.mainBackground
         tableView.allowsSelection = false
+
+        // 1) Add a UIRefreshControl for pull-to-refresh
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: .valueChanged)
+        tableView.refreshControl = refreshControl
+    }
+    
+    // 2) Called when user pulls to refresh
+    @objc private func handleRefresh(_ sender: UIRefreshControl) {
+        loadStoriesFromUserDefaults()
+        sender.endRefreshing()
     }
     
     // MARK: - UITableViewDataSource
