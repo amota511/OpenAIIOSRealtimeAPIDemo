@@ -4,12 +4,44 @@ import AVFoundation
 
 class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCDataChannelDelegate {
     
-    @IBOutlet weak var myVolumeView: UIView!
-    @IBOutlet weak var statusButton: UIButton!
+    private let statusButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Start With WebRTC", for: .normal)
+        button.layer.borderWidth = 1.0
+        button.layer.borderColor = UIColor.blue.cgColor
+        button.layer.cornerRadius = 8
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private let myVolumeView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initUI()
+        
+        // Add programmatic subviews and constraints
+        view.addSubview(statusButton)
+        view.addSubview(myVolumeView)
+        NSLayoutConstraint.activate([
+            statusButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            statusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            statusButton.widthAnchor.constraint(equalToConstant: 200),
+            statusButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            myVolumeView.topAnchor.constraint(equalTo: statusButton.bottomAnchor, constant: 20),
+            myVolumeView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            myVolumeView.widthAnchor.constraint(equalToConstant: 200),
+            myVolumeView.heightAnchor.constraint(equalToConstant: 100)
+        ])
+        
+        //Monitor Audio Volum Change
+        DispatchQueue.main.async {
+            self.monitorAudioTrackLeval()
+        }
     }
     func initUI(){
         statusButton.layer.borderWidth = 1.0
@@ -23,7 +55,7 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
     }
     //MARK: Handle Status
     var connect_status = "notConnect" // notConnect connecting connected
-    @IBAction func clickStatusButton(_ sender: Any) {
+    @objc func clickStatusButton(_ sender: UIButton) {
         if connect_status == "notConnect"{
             connectWebSockt()
         }else if connect_status == "connecting"{
