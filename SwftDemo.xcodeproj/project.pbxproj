@@ -15,6 +15,8 @@
 		A5C226392D1E0CF10023C824 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C226382D1E0CF10023C824 /* StoreKit.framework */; };
 		A5C2263B2D1E13CE0023C824 /* UpsellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C2263A2D1E13CE0023C824 /* UpsellViewController.swift */; };
 		A5D39F2C2D1E2DF300F34ABB /* GlobalColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D39F2B2D1E2DF300F34ABB /* GlobalColors.swift */; };
+		A5D39F2E2D2087BC00F34ABB /* WebRTC in Resources */ = {isa = PBXBuildFile; fileRef = A5D39F2D2D2087BC00F34ABB /* WebRTC */; };
+		A5D39F322D208E3C00F34ABB /* RealTimeApiWebRTCMainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D39F312D208E3C00F34ABB /* RealTimeApiWebRTCMainVC.swift */; };
 		A9097BCC2CB7E6F100A5EE5A /* PlayAudioCotinuouslyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9097BCB2CB7E6F100A5EE5A /* PlayAudioCotinuouslyManager.swift */; };
 		A98CE87E2C64675A00489AD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A98CE87D2C64675A00489AD9 /* Assets.xcassets */; };
 		A98D89792CDC9DEA00389BF4 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98D89772CDC9DEA00389BF4 /* RootViewController.swift */; };
@@ -37,6 +39,8 @@
 		A5C2263A2D1E13CE0023C824 /* UpsellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpsellViewController.swift; sourceTree = "<group>"; };
 		A5D39F2A2D1E27A400F34ABB /* Subs.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Subs.storekit; sourceTree = "<group>"; };
 		A5D39F2B2D1E2DF300F34ABB /* GlobalColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalColors.swift; sourceTree = "<group>"; };
+		A5D39F2D2D2087BC00F34ABB /* WebRTC */ = {isa = PBXFileReference; lastKnownFileType = folder; path = WebRTC; sourceTree = "<group>"; };
+		A5D39F312D208E3C00F34ABB /* RealTimeApiWebRTCMainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTimeApiWebRTCMainVC.swift; sourceTree = "<group>"; };
 		A9097BCB2CB7E6F100A5EE5A /* PlayAudioCotinuouslyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayAudioCotinuouslyManager.swift; sourceTree = "<group>"; };
 		A98CE87D2C64675A00489AD9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A98D89772CDC9DEA00389BF4 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -130,7 +134,9 @@
 				A5406FC42D1A7BC900ACB75C /* MainTabBarController.swift */,
 				A5406FC82D1B0D4900ACB75C /* TalkThroughViewController.swift */,
 				A5406FC62D1A7BD800ACB75C /* ProgressViewController.swift */,
+				A5D39F312D208E3C00F34ABB /* RealTimeApiWebRTCMainVC.swift */,
 				A98CE87D2C64675A00489AD9 /* Assets.xcassets */,
+				A5D39F2D2D2087BC00F34ABB /* WebRTC */,
 				A9FFC4642CB7B95F006CBCB7 /* WebSocket */,
 				A9FFC4662CB7BE39006CBCB7 /* RecordAudio */,
 				A9097BCA2CB7E1E300A5EE5A /* PlayAudio */,
@@ -178,6 +184,7 @@
 				A9AC38672B04B35E0088D5BB /* Frameworks */,
 				A9AC38682B04B35E0088D5BB /* Resources */,
 				96DEAFD88B70806E8B9CF5E0 /* [CP] Copy Pods Resources */,
+				B9177BCAEC1FE408B21A4A23 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -228,6 +235,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A98CE87E2C64675A00489AD9 /* Assets.xcassets in Resources */,
+				A5D39F2E2D2087BC00F34ABB /* WebRTC in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,6 +281,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SwftDemo/Pods-SwftDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		B9177BCAEC1FE408B21A4A23 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SwftDemo/Pods-SwftDemo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SwftDemo/Pods-SwftDemo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SwftDemo/Pods-SwftDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -281,6 +306,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9AC386E2B04B35E0088D5BB /* AppDelegate.swift in Sources */,
+				A5D39F322D208E3C00F34ABB /* RealTimeApiWebRTCMainVC.swift in Sources */,
 				A9FFC4682CB7BEFD006CBCB7 /* RecordAudioManager.swift in Sources */,
 				A5406FC52D1A7BC900ACB75C /* MainTabBarController.swift in Sources */,
 				A9FFC45C2CB7B799006CBCB7 /* Extention+MBProgress.swift in Sources */,
