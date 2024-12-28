@@ -49,6 +49,21 @@
                   endingLineNumber = "156"
                   offsetFromSymbolStart = "1008">
                </Location>
+               <Location
+                  uuid = "917E5059-6E6C-4B99-AEFC-599AF1271003 - d874d240cf556538"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SwftDemo.WebSocketManager.setupSessionParam() -&gt; ()"
+                  moduleName = "SwftDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronmotayne/Desktop/src/Poof/SwftDemo/WebSocket/WebSocketManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "156"
+                  endingLineNumber = "156"
+                  offsetFromSymbolStart = "700">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
