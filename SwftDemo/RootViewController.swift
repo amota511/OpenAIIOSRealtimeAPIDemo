@@ -280,11 +280,52 @@ class RootViewController: UIViewController {
     // Add a helper to send conversation off for summarizing
     private func summarizeDailyConversation() {
         let conversation = WebSocketManager.shared.getAllConversationText()
-        
-        // Stub for sending conversation to ChatGPT (or other summarizing service).
-        // Currently just prints a placeholder summary.
-        print("Sending conversation to ChatGPT for summary:\n\(conversation)")
-        print("ChatGPT summary of the day: [Placeholder summary response here]")
+
+        // Remove (or retain if you like) the local print statements:
+        // print("Sending conversation to ChatGPT for summary:\n\(conversation)")
+        // print("ChatGPT summary of the day: [Placeholder summary response here]")
+
+        // Replace with an actual call to OpenAI (example for gpt-3.5-turbo)
+        guard let url = URL(string: "https://api.openai.com/v1/chat/completions") else {
+            print("Invalid URL")
+            return
+        }
+
+        let messages: [[String: Any]] = [
+            ["role": "user",   "content": "Please summarize how the user did for the day, based on this conversation:\n\(conversation)"]
+        ]
+
+        let requestBody: [String: Any] = [
+            "model": "o1-mini",
+            "messages": messages
+        ]
+
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: requestBody, options: [])
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue("Bearer \(openAiApiKey)", forHTTPHeaderField: "Authorization")
+            request.httpBody = jsonData
+
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    print("Request error: \(error)")
+                    return
+                }
+                guard let data = data else {
+                    print("No response data received")
+                    return
+                }
+                // For clarity, just print raw text:
+                if let responseString = String(data: data, encoding: .utf8) {
+                    print("OpenAI summarization response:\n\(responseString)")
+                }
+            }.resume()
+
+        } catch {
+            print("JSON serialization error: \(error)")
+        }
     }
 }
 
