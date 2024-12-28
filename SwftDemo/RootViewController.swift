@@ -63,16 +63,60 @@ class RootViewController: UIViewController {
     
     // 1) Add properties for timer logic
     private var sessionTimer: Timer?
-    private var remainingTime = 300 // 5:00 in seconds
+    private var remainingTime = 120 // 2:00 in seconds
     
     private let timerLabel: UILabel = {
         let label = UILabel()
-        label.text = "5:00"
+        label.text = "2:00"
         label.font = UIFont.boldSystemFont(ofSize: 80)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    // Provide a structure to parse the GPT response (only if you don't already parse it)
+    private struct ChatCompletionResponse: Decodable {
+        let choices: [Choice]
+        struct Choice: Decodable {
+            let message: Message
+        }
+        struct Message: Decodable {
+            let content: String
+        }
+    }
+
+    // A struct matching the "Stories" format from ProgressViewController
+    private struct StoryItem: Codable {
+        let date: String
+        let story: String
+    }
+
+    // Store summarized text in UserDefaults with an existing array, under key "Stories"
+    private func storeSummarizedStory(_ summary: String) {
+        // Define a new StoryItem
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM dd, yyyy"
+        let newStory = StoryItem(date: formatter.string(from: Date()), story: summary)
+
+        // Load existing stories
+        let defaults = UserDefaults.standard
+        var items: [StoryItem] = []
+        if let data = defaults.data(forKey: "Stories"),
+           let decoded = try? JSONDecoder().decode([StoryItem].self, from: data) {
+            items = decoded
+        } else {
+            print("Failed to decode summarized result")
+        }
+
+        // Append and save
+        items.append(newStory)
+        if let updatedData = try? JSONEncoder().encode(items) {
+            defaults.set(updatedData, forKey: "Stories")
+            print("Stored Summarized result")
+        } else {
+            print("Couldn't store summarized result")
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -203,10 +247,10 @@ class RootViewController: UIViewController {
             // Reset the timer when the connection is established
             sessionTimer?.invalidate()
             sessionTimer = nil
-            remainingTime = 300
-            timerLabel.text = "5:00"
+            remainingTime = 120        // Use 120 for 2 minutes
+            timerLabel.text = "2:00"   // Update the label text too
 
-            startTimer()  
+            startTimer()
             startSessionButton.setTitle("End Check-in", for: .normal)
         } else {
             startSessionButton.setTitle("", for: .normal)
@@ -317,9 +361,20 @@ class RootViewController: UIViewController {
                     print("No response data received")
                     return
                 }
-                // For clarity, just print raw text:
-                if let responseString = String(data: data, encoding: .utf8) {
-                    print("OpenAI summarization response:\n\(responseString)")
+
+                do {
+                    // Attempt to parse the OpenAI Chat Completions response
+                    let decodedResponse = try JSONDecoder().decode(ChatCompletionResponse.self, from: data)
+                    if let firstContent = decodedResponse.choices.first?.message.content {
+                        // 1) Print or handle the summarized text 
+                        print("OpenAI summarized response:\n\(firstContent)")
+
+                        // 2) Store it in UserDefaults in "Stories" format
+                        self.storeSummarizedStory(firstContent)
+                    }
+                } catch {
+                    // If decoding fails, just print raw text as fallback
+                    print("Failed to decode chat completion. Raw:\n\(String(data: data, encoding: .utf8) ?? "")")
                 }
             }.resume()
 
