@@ -75,6 +75,7 @@ class WebSocketManager: NSObject, WebSocketDelegate{
     var getAudioTimer: Timer?
     var audio_String = ""
     var audio_String_count = 0
+    var conversationHistory = [String]()
     func handleRecivedMeaage(message_string: String){
         if let jsonData = message_string.data(using: .utf8) {
             do {
@@ -126,6 +127,9 @@ class WebSocketManager: NSObject, WebSocketDelegate{
                         if let transcript = jsonObject["transcript"] as? String{
                             let dict = ["text": transcript]
                             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "HaveInputText"), object: dict)
+                            
+                            // Store user text
+                            conversationHistory.append("User: \(transcript)")
                         }
                     }
                     //4.7.Complete a reply.
@@ -140,6 +144,9 @@ class WebSocketManager: NSObject, WebSocketDelegate{
                            let transcript = first_content["transcript"] as? String{
                             let dict = ["text": transcript]
                             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "HaveOutputText"), object: dict)
+
+                            // Store AI text
+                            conversationHistory.append("AI: \(transcript)")
                         }
                     }
                 }
@@ -152,7 +159,7 @@ class WebSocketManager: NSObject, WebSocketDelegate{
     //MARK: 5.Configure session information after creating the session
     func setupSessionParam(){
         let systemString = UserDefaults.standard.string(forKey: "GPTSystemString") ?? ""
-        print("This is the system string: ", systemString)
+//        print("This is the system string: ", systemString)
         let sessionConfig: [String: Any] = [
             "type": "session.update",
             "session": [
@@ -290,7 +297,7 @@ class WebSocketManager: NSObject, WebSocketDelegate{
                     "prefix_padding_ms": 300,
                     "silence_duration_ms": 500
                 ],
-                "voice": "sage",
+                "voice": "alloy",
                 "temperature": 1,
                 "max_response_output_tokens": 4096,
                 "tools": [],
@@ -309,6 +316,11 @@ class WebSocketManager: NSObject, WebSocketDelegate{
                 print("Configure session information:\(jsonData)")
             }
         }
+    }
+    
+    // Provide a helper function to retrieve all conversation text
+    func getAllConversationText() -> String {
+        return conversationHistory.joined(separator: "\n")
     }
 }
 
