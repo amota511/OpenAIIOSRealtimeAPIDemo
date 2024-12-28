@@ -93,6 +93,7 @@ class RootViewController: UIViewController {
 
     private let oneDayInterval = 24.0 * 60.0 * 60.0
 
+
     // Store summarized text in UserDefaults with an existing array, under key "Stories"
     private func storeSummarizedStory(_ summary: String) {
         // Define a new StoryItem
@@ -152,7 +153,6 @@ class RootViewController: UIViewController {
         
         startSessionButton.addTarget(self, action: #selector(clickSessionButton(_:)), for: .touchUpInside)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(openAiStatusChanged), name: NSNotification.Name(rawValue: "WebSocketManager_connected_status_changed"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showMonitorAudioDataView(notification:)), name: NSNotification.Name(rawValue: "showMonitorAudioDataView"), object: nil)
         NotificationCenter.default.addObserver(
             self,
@@ -213,8 +213,9 @@ class RootViewController: UIViewController {
     }
     
     @objc func clickSessionButton(_ sender: Any) {
-        if WebSocketManager.shared.connected_status == "connected" {
-            // Manually stopping the session
+        // Replace WebSocketManager logic with RealTimeApiWebRTCMainVC
+        if realTimeAPI.connect_status == "connected" {
+            // Same end-session prompt
             sessionTimer?.invalidate()
             sessionTimer = nil
             
@@ -230,29 +231,12 @@ class RootViewController: UIViewController {
             alertVC.addAction(cancelAction)
             alertVC.addAction(endSessionAction)
             getCurrentVc().present(alertVC, animated: true)
-
+            
+        } else if realTimeAPI.connect_status == "connecting" {
+            startSessionButton.setTitle("Connecting...", for: .normal)
         } else {
             // If not connected, start connecting
-            WebSocketManager.shared.connectWebSocketOfOpenAi()
-        }
-    }
-    
-    @objc func openAiStatusChanged() {
-        if WebSocketManager.shared.connected_status == "not_connected" {
-            startSessionButton.setTitle("Start Check-in", for: .normal)
-        } else if WebSocketManager.shared.connected_status == "connecting" {
-            startSessionButton.setTitle("Connecting...", for: .normal)
-        } else if WebSocketManager.shared.connected_status == "connected" {
-            // Reset the timer when the connection is established
-            sessionTimer?.invalidate()
-            sessionTimer = nil
-            remainingTime = 120        // Use 120 for 2 minutes
-            timerLabel.text = "2:00"   // Update the label text too
-
-            startTimer()
-            startSessionButton.setTitle("End Check-in", for: .normal)
-        } else {
-            startSessionButton.setTitle("", for: .normal)
+            realTimeAPI.connectWebSockt()
         }
     }
     
@@ -316,10 +300,12 @@ class RootViewController: UIViewController {
 
     // 1) Factor the common end-session logic into one helper method
     private func endSessionCleanupAndSummarize() {
-        // Disconnect from WebSocket
-        WebSocketManager.shared.socket.disconnect()
-        PlayAudioCotinuouslyManager.shared.audio_event_Queue.removeAll()
-        RecordAudioManager.shared.pauseCaptureAudio()
+        // Instead of WebSocketManager.shared, call RealTimeApiWebRTCMainVC stopAll()
+        realTimeAPI.stopAll()
+        
+        // Remove extra calls to managers that were part of the old approach:
+        // PlayAudioCotinuouslyManager.shared.audio_event_Queue.removeAll()
+        // RecordAudioManager.shared.pauseCaptureAudio()
 
         // Reset timer UI
         remainingTime = 120
@@ -333,14 +319,14 @@ class RootViewController: UIViewController {
         // Stop visualizer from moving
         audioVolumeView.resetCirclesForUserSpeaking()
 
-        // Summarize conversation after session ends
+        // Summarize conversation after session ends (remove old getAllConversationText if needed)
         summarizeDailyConversation()
     }
 
     // Add a helper to send conversation off for summarizing
     private func summarizeDailyConversation() {
-        let conversation = WebSocketManager.shared.getAllConversationText()
-
+        let conversation = "No conversation text available. (Update to use RealTimeApiWebRTCMainVC's data if desired.)"
+        
         // Remove (or retain if you like) the local print statements:
         // print("Sending conversation to ChatGPT for summary:\n\(conversation)")
         // print("ChatGPT summary of the day: [Placeholder summary response here]")
@@ -352,7 +338,7 @@ class RootViewController: UIViewController {
         }
 
         let messages: [[String: Any]] = [
-            ["role": "user",   "content": "Please summarize how the user did for the day, based on this conversation:\n\(conversation)"]
+            ["role": "user", "content": "Please summarize day based on this conversation:\n\(conversation)"]
         ]
 
         let requestBody: [String: Any] = [
@@ -410,25 +396,25 @@ class RootViewController: UIViewController {
     // 1) Factor out the logic to check lastCheckIn
     private func updateCheckInButton() {
         let defaults = UserDefaults.standard
-        if let lastCheckIn = defaults.object(forKey: "lastCheckIn") as? Date {
+//        if let lastCheckIn = defaults.object(forKey: "lastCheckIn") as? Date {
             // 1) Check if lastCheckIn is the same calendar day as now
-            if Calendar.current.isDate(lastCheckIn, inSameDayAs: Date()) {
-                // If the last check-in is on the same day, disable the button
-                startSessionButton.isEnabled = false
-                startSessionButton.setTitle("Already checked in", for: .normal)
-                startSessionButton.backgroundColor = .lightGray
-            } else {
-                // Different calendar day; let them start a new session
-                startSessionButton.isEnabled = true
-                startSessionButton.setTitle("Start Check-in", for: .normal)
-                startSessionButton.backgroundColor = GlobalColors.primaryButton
-            }
-        } else {
+//            if Calendar.current.isDate(lastCheckIn, inSameDayAs: Date()) {
+//                // If the last check-in is on the same day, disable the button
+//                startSessionButton.isEnabled = false
+//                startSessionButton.setTitle("Already checked in", for: .normal)
+//                startSessionButton.backgroundColor = .lightGray
+//            } else {
+//                // Different calendar day; let them start a new session
+//                startSessionButton.isEnabled = true
+//                startSessionButton.setTitle("Start Check-in", for: .normal)
+//                startSessionButton.backgroundColor = GlobalColors.primaryButton
+//            }
+//        } else {
             // No prior session at all
             startSessionButton.isEnabled = true
             startSessionButton.setTitle("Start Check-in", for: .normal)
             startSessionButton.backgroundColor = GlobalColors.primaryButton
-        }
+//        }
     }
 }
 

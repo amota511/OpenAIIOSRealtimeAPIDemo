@@ -222,13 +222,13 @@ let inputRenderCallback: AURenderCallback = { (
             ]
             if let jsonData = try? JSONSerialization.data(withJSONObject: event, options: []),
                let jsonString = String(data: jsonData, encoding: .utf8){
-                WebSocketManager.shared.socket.write(string: jsonString) {
-                    if self.local_record_Array.count > 0{
-                        self.local_record_Array.removeFirst()
-                        self.sendMessageOneByOne()
-                        print("send message of audio data success---\(sequenceNumber)")
-                    }
-                }
+//                WebSocketManager.shared.socket.write(string: jsonString) {
+//                    if self.local_record_Array.count > 0{
+//                        self.local_record_Array.removeFirst()
+//                        self.sendMessageOneByOne()
+//                        print("send message of audio data success---\(sequenceNumber)")
+//                    }
+//                }
             }
         }
     }
