@@ -214,6 +214,7 @@ class RootViewController: UIViewController {
     
     @objc func clickSessionButton(_ sender: Any) {
         if WebSocketManager.shared.connected_status == "connected" {
+            // Manually stopping the session
             sessionTimer?.invalidate()
             sessionTimer = nil
             
@@ -224,21 +225,14 @@ class RootViewController: UIViewController {
             )
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
             let endSessionAction = UIAlertAction(title: "End Session", style: .default) { alert in
-                WebSocketManager.shared.audio_String = ""
-                WebSocketManager.shared.audio_String_count = 0
-                PlayAudioCotinuouslyManager.shared.audio_event_Queue.removeAll()
-                RecordAudioManager.shared.pauseCaptureAudio()
-                WebSocketManager.shared.socket.disconnect()
-
-                // Summarize conversation after session ends
-                self.summarizeDailyConversation()
+                self.endSessionCleanupAndSummarize()
             }
             alertVC.addAction(cancelAction)
             alertVC.addAction(endSessionAction)
             getCurrentVc().present(alertVC, animated: true)
+
         } else {
-            // 3) Remove auto-start here
-            // startTimer() <-- removed
+            // If not connected, start connecting
             WebSocketManager.shared.connectWebSocketOfOpenAi()
         }
     }
@@ -313,17 +307,34 @@ class RootViewController: UIViewController {
             let seconds = remainingTime % 60
             timerLabel.text = String(format: "%d:%02d", minutes, seconds)
         } else {
+            // Timer finished — do the same cleanup steps
             sessionTimer?.invalidate()
             sessionTimer = nil
-            // 3) End the real-time connection
-            WebSocketManager.shared.socket.disconnect()
-
-            // Summarize conversation after timer ends
-            summarizeDailyConversation()
-
-            // 4) Disable the Start Session button
-            startSessionButton.isEnabled = false
+            endSessionCleanupAndSummarize()
         }
+    }
+
+    // 1) Factor the common end-session logic into one helper method
+    private func endSessionCleanupAndSummarize() {
+        // Disconnect from WebSocket
+        WebSocketManager.shared.socket.disconnect()
+        PlayAudioCotinuouslyManager.shared.audio_event_Queue.removeAll()
+        RecordAudioManager.shared.pauseCaptureAudio()
+
+        // Reset timer UI
+        remainingTime = 120
+        timerLabel.text = "2:00"
+
+        // Disable the button, set gray
+        startSessionButton.isEnabled = false
+        startSessionButton.backgroundColor = .lightGray
+        startSessionButton.setTitle("Already checked in", for: .normal)
+
+        // Stop visualizer from moving
+        audioVolumeView.resetCirclesForUserSpeaking()
+
+        // Summarize conversation after session ends
+        summarizeDailyConversation()
     }
 
     // Add a helper to send conversation off for summarizing
