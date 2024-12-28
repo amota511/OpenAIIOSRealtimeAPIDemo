@@ -400,20 +400,20 @@ class RootViewController: UIViewController {
     private func updateCheckInButton() {
         let defaults = UserDefaults.standard
         if let lastCheckIn = defaults.object(forKey: "lastCheckIn") as? Date {
-            let timeSinceLastCheckIn = Date().timeIntervalSince(lastCheckIn)
-            if timeSinceLastCheckIn < oneDayInterval {
-                // Disable and make background gray
+            // 1) Check if lastCheckIn is the same calendar day as now
+            if Calendar.current.isDate(lastCheckIn, inSameDayAs: Date()) {
+                // If the last check-in is on the same day, disable the button
                 startSessionButton.isEnabled = false
                 startSessionButton.setTitle("Already checked in", for: .normal)
                 startSessionButton.backgroundColor = .lightGray
             } else {
-                // Enable and revert to primary button color
+                // Different calendar day; let them start a new session
                 startSessionButton.isEnabled = true
                 startSessionButton.setTitle("Start Check-in", for: .normal)
                 startSessionButton.backgroundColor = GlobalColors.primaryButton
             }
         } else {
-            // No prior session, allow check-in by default
+            // No prior session at all
             startSessionButton.isEnabled = true
             startSessionButton.setTitle("Start Check-in", for: .normal)
             startSessionButton.backgroundColor = GlobalColors.primaryButton
