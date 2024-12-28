@@ -271,20 +271,19 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         Continue to offer brief, supportive check-ins that reflect the user’s desire for encouragement and guidance. Keep your tone gentle, warm, and reassuring, focusing on progress rather than perfection. Maintain the format of the example conversations
 
         User answers to above question:
+        1) \(userResponses[0])
+        2) \(userResponses[1])
+        3) \(userResponses[2])
+        4) \(userResponses[3])
+        5) \(userResponses[4])
+        """
+        
+        /* 
         1) losing weight
         2) over eating, making un healthy life choices
         3) remind me why im trying to lose weight and that it takes time to build strong habits
         4) Every other day at night
         5) if i have lost a total of 10 pounds.
-        """
-        
-        /*
-         1) \(userResponses[0])
-         2) \(userResponses[1])
-         3) \(userResponses[2])
-         4) \(userResponses[3])
-         5) \(userResponses[4])
-         
          */
         
         // Get the same token used in WebSocketManager
