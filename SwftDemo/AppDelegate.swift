@@ -13,7 +13,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = GlobalColors.mainBackground
         
-        window?.rootViewController = OnboardingViewController()
+        let gptString = UserDefaults.standard.string(forKey: "GPTSystemString") ?? ""
+        if !gptString.isEmpty {
+            window?.rootViewController = MainTabBarController()
+        } else {
+            window?.rootViewController = OnboardingViewController()
+        }
+
         window?.makeKeyAndVisible()
         
         return true
