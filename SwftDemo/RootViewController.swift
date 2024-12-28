@@ -91,6 +91,8 @@ class RootViewController: UIViewController {
         let story: String
     }
 
+    private let oneDayInterval = 24.0 * 60.0 * 60.0
+
     // Store summarized text in UserDefaults with an existing array, under key "Stories"
     private func storeSummarizedStory(_ summary: String) {
         // Define a new StoryItem
@@ -121,6 +123,9 @@ class RootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = GlobalColors.mainBackground
+        
+        // Initially set up the session button state
+        updateCheckInButton()
         
         view.addSubview(timerLabel)
         NSLayoutConstraint.activate([
@@ -213,12 +218,12 @@ class RootViewController: UIViewController {
             sessionTimer = nil
             
             let alertVC = UIAlertController(
-                title: "The websocket is connected. Disconnect?",
+                title: "Are you sure you want to end the session?",
                 message: "",
                 preferredStyle: .alert
             )
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-            let confirAction = UIAlertAction(title: "Confirm", style: .default) { alert in
+            let endSessionAction = UIAlertAction(title: "End Session", style: .default) { alert in
                 WebSocketManager.shared.audio_String = ""
                 WebSocketManager.shared.audio_String_count = 0
                 PlayAudioCotinuouslyManager.shared.audio_event_Queue.removeAll()
@@ -229,7 +234,7 @@ class RootViewController: UIViewController {
                 self.summarizeDailyConversation()
             }
             alertVC.addAction(cancelAction)
-            alertVC.addAction(confirAction)
+            alertVC.addAction(endSessionAction)
             getCurrentVc().present(alertVC, animated: true)
         } else {
             // 3) Remove auto-start here
@@ -371,6 +376,14 @@ class RootViewController: UIViewController {
 
                         // 2) Store it in UserDefaults in "Stories" format
                         self.storeSummarizedStory(firstContent)
+
+                        // 2) After a successful session, store the lastCheckIn time
+                        UserDefaults.standard.set(Date(), forKey: "lastCheckIn")
+                        
+                        // 3) Re-check the button state on the main thread
+                        DispatchQueue.main.async {
+                            self.updateCheckInButton()
+                        }
                     }
                 } catch {
                     // If decoding fails, just print raw text as fallback
@@ -380,6 +393,30 @@ class RootViewController: UIViewController {
 
         } catch {
             print("JSON serialization error: \(error)")
+        }
+    }
+
+    // 1) Factor out the logic to check lastCheckIn
+    private func updateCheckInButton() {
+        let defaults = UserDefaults.standard
+        if let lastCheckIn = defaults.object(forKey: "lastCheckIn") as? Date {
+            let timeSinceLastCheckIn = Date().timeIntervalSince(lastCheckIn)
+            if timeSinceLastCheckIn < oneDayInterval {
+                // Disable and make background gray
+                startSessionButton.isEnabled = false
+                startSessionButton.setTitle("Already checked in", for: .normal)
+                startSessionButton.backgroundColor = .lightGray
+            } else {
+                // Enable and revert to primary button color
+                startSessionButton.isEnabled = true
+                startSessionButton.setTitle("Start Check-in", for: .normal)
+                startSessionButton.backgroundColor = GlobalColors.primaryButton
+            }
+        } else {
+            // No prior session, allow check-in by default
+            startSessionButton.isEnabled = true
+            startSessionButton.setTitle("Start Check-in", for: .normal)
+            startSessionButton.backgroundColor = GlobalColors.primaryButton
         }
     }
 }
