@@ -160,6 +160,9 @@ class RootViewController: UIViewController {
             let feedbackAction = UIAction(title: "Leave feedback") { _ in
                 // Handle feedback
             }
+//            let manageSubscriptionAction = UIAction(title: "Manage Subscription") { _ in
+//                // Handle feedback
+//            }
             let logoutAction = UIAction(title: "Log out", attributes: .destructive) { _ in
                 // Handle log out
             }

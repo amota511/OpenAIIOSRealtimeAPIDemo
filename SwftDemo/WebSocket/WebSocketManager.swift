@@ -151,10 +151,12 @@ class WebSocketManager: NSObject, WebSocketDelegate{
     
     //MARK: 5.Configure session information after creating the session
     func setupSessionParam(){
+        let systemString = UserDefaults.standard.string(forKey: "GPTSystemString") ?? ""
+        print("This is the system string: ", systemString)
         let sessionConfig: [String: Any] = [
             "type": "session.update",
             "session": [
-                "instructions": """
+                "instructions": UserDefaults.standard.string(forKey: "GPTSystemString") ?? """
                 GPT content: **System Instructions for Behavioral Psychologist AI Model**
 
                 ---
@@ -309,3 +311,4 @@ class WebSocketManager: NSObject, WebSocketDelegate{
         }
     }
 }
+

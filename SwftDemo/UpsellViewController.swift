@@ -71,6 +71,15 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         return indicator
     }()
     
+    private let frostedBackgroundView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: .systemMaterialLight)
+        let view = UIVisualEffectView(effect: blurEffect)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 12
+        view.clipsToBounds = true
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = GlobalColors.mainBackground
@@ -81,6 +90,9 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         view.addSubview(tryButton)
         view.addSubview(priceDetailsLabel)
         view.addSubview(spinner)
+        view.addSubview(frostedBackgroundView)
+        view.bringSubviewToFront(spinner)
+        
         spinner.center = view.center
         
         // Register self as a payment queue observer
@@ -90,6 +102,15 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         fetchSubscriptionProduct()
         
         setupConstraints()
+        
+        NSLayoutConstraint.activate([
+            frostedBackgroundView.centerXAnchor.constraint(equalTo: spinner.centerXAnchor),
+            frostedBackgroundView.centerYAnchor.constraint(equalTo: spinner.centerYAnchor),
+            frostedBackgroundView.widthAnchor.constraint(equalToConstant: 100),
+            frostedBackgroundView.heightAnchor.constraint(equalToConstant: 100)
+        ])
+        
+        frostedBackgroundView.isHidden = true  // Hide background by default
     }
     
     private func setupConstraints() {
@@ -189,6 +210,7 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
 
         DispatchQueue.main.async {
             self.spinner.startAnimating()
+            self.frostedBackgroundView.isHidden = false   // Show background with spinner
             self.sendOnboardingInfoToGPT()
         }
     }
@@ -290,20 +312,33 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         request.httpBody = payload
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error: \(error)")
-            } else if
-                let data = data,
-                let json = try? JSONSerialization.jsonObject(with: data, options: []),
-                let dict = json as? [String: Any],
-                let choices = dict["choices"] as? [[String: Any]],
-                let firstChoice = choices.first,
-                let message = firstChoice["message"] as? [String: Any],
-                let content = message["content"] as? String {
-                    print("GPT content: \(content)")
-            }
             DispatchQueue.main.async {
                 self.spinner.stopAnimating()
+                self.frostedBackgroundView.isHidden = true   // Hide background when spinner stops
+
+                if let error = error {
+                    print("Error: \(error)")
+                    self.showMainTabBar()
+                    return
+                }
+
+                guard
+                    let data = data,
+                    let json = try? JSONSerialization.jsonObject(with: data, options: []),
+                    let dict = json as? [String: Any],
+                    let choices = dict["choices"] as? [[String: Any]],
+                    let firstChoice = choices.first,
+                    let message = firstChoice["message"] as? [String: Any],
+                    let content = message["content"] as? String
+                else {
+                    print("No valid GPT content.")
+                    self.showMainTabBar()
+                    return
+                }
+
+                print("GPT content: \(content)")
+                UserDefaults.standard.set(content, forKey: "GPTSystemString")
+
                 self.showMainTabBar()
             }
         }
