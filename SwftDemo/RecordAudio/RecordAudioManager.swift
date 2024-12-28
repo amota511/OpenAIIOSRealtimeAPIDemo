@@ -118,74 +118,96 @@ class RecordAudioManager: NSObject, AVCaptureAudioDataOutputSampleBufferDelegate
             print("Initialize Audio Unit--fail")
         }
     }
-    //MARK: 2.Process the collected audio data.
-    var count  = 0
-    let inputRenderCallback: AURenderCallback = { (
-        inRefCon,
+   // MARK: 2.Process the collected audio data.
+var count = 0
+let inputRenderCallback: AURenderCallback = { (
+    inRefCon,
+    ioActionFlags,
+    inTimeStamp,
+    inBusNumber,
+    inNumberFrames,
+    ioData
+) -> OSStatus in
+    var bufferList = AudioBufferList(
+        mNumberBuffers: 1,
+        mBuffers: AudioBuffer(
+            mNumberChannels: 1,
+            mDataByteSize: inNumberFrames * 2,
+            mData: UnsafeMutableRawPointer.allocate(
+                byteCount: Int(inNumberFrames) * 2,
+                alignment: MemoryLayout<Int16>.alignment
+            )
+        )
+    )
+    // 1) Render the audio
+    let status = AudioUnitRender(
+        RecordAudioManager.shared.audioUnit!,
         ioActionFlags,
         inTimeStamp,
         inBusNumber,
         inNumberFrames,
-        ioData
-    ) -> OSStatus in
-        var bufferList = AudioBufferList(
-            mNumberBuffers: 1,
-            mBuffers: AudioBuffer(
-                mNumberChannels: 1,
-                mDataByteSize: inNumberFrames * 2,
-                mData: UnsafeMutableRawPointer.allocate(byteCount: Int(inNumberFrames) * 2, alignment: MemoryLayout<Int16>.alignment)
-            )
-        )
-        let status = AudioUnitRender(RecordAudioManager.shared.audioUnit!,
-                                     ioActionFlags,
-                                     inTimeStamp,
-                                     inBusNumber,
-                                     inNumberFrames,
-                                     &bufferList)
-        if status == noErr {
-            let inputData = bufferList.mBuffers.mData?.assumingMemoryBound(to: Int16.self)
-            let frameCount = Int(inNumberFrames)
-            var int16_array: [Int16] = []
-            for frame in 0..<frameCount {
-                let sample = inputData?[frame] ?? 0
-                int16_array.append(sample)
-            }
-            if let buffer = int16DataToPCMBuffer(int16Data: int16_array, sampleRate: Double(44100), channels: 1){
-                RecordAudioManager.shared.local_record_buffers.append(buffer)
-            }
-            
-            //[int16]-->Data
-            let pcmData = Data(bytes: int16_array, count: int16_array.count * MemoryLayout<Int16>.size)
-            //Data-->Base64String
-            let data_base64 = pcmData.base64EncodedString()
-            //Send Message
-            var current_audio_data = [String: Any]()
-            current_audio_data["type"] = "input_audio_buffer.append"
-            current_audio_data["audio"] = data_base64
-            current_audio_data["sequenceNumber"] = Int(RecordAudioManager.shared.count)
-            RecordAudioManager.shared.local_record_Array.append(current_audio_data)
-            if RecordAudioManager.shared.count == 0 || RecordAudioManager.shared.local_record_Array.count == 1{
-                RecordAudioManager.shared.sendMessageOneByOne()
-            }
-            RecordAudioManager.shared.count += 1
-            
-            //Monitor Audio Volume Data
-            //RMS：0（min）-1(max)
-            var rmsValue: Float = 0.0
-            for frame in 0..<frameCount {
-                let sample = inputData?[frame] ?? 0
-                int16_array.append(sample)
-                let normalizedSample = Float(sample) / Float(Int16.max)
-                rmsValue += normalizedSample * normalizedSample
-            }
-            rmsValue = sqrt(rmsValue / Float(frameCount))
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showMonitorAudioDataView"), object: ["rmsValue": Float(rmsValue)])
-            
-        } else {
-            print("AudioUnitRender failed with status: \(status)")
+        &bufferList
+    )
+    
+    if status == noErr {
+        // 2) Extract data
+        guard
+            let inputData = bufferList.mBuffers.mData?
+                  .assumingMemoryBound(to: Int16.self)
+        else {
+            return noErr
         }
-        return noErr
+        
+        var int16_array = [Int16]()
+        int16_array.reserveCapacity(Int(inNumberFrames))
+        
+        // 3) Compute RMS & gather buffers in one loop
+        var rmsValue: Float = 0.0
+        for frame in 0..<Int(inNumberFrames) {
+            let sample = inputData[frame]
+            int16_array.append(sample)
+            let normalizedSample = Float(sample) / Float(Int16.max)
+            rmsValue += normalizedSample * normalizedSample
+        }
+        rmsValue = sqrt(rmsValue / Float(inNumberFrames))
+        
+        // 4) Convert the int16 array to your PCM buffer
+        //    Make sure to match the correct sample rate: 24 kHz
+        if let buffer = int16DataToPCMBuffer(
+            int16Data: int16_array,
+            sampleRate: 24000,   // match your AudioUnit config
+            channels: 1
+        ) {
+            RecordAudioManager.shared.local_record_buffers.append(buffer)
+        }
+        
+        // 5) Convert data to base64 & send
+        let pcmData = Data(bytes: int16_array,
+                           count: int16_array.count * MemoryLayout<Int16>.size)
+        let data_base64 = pcmData.base64EncodedString()
+        
+        var current_audio_data = [String: Any]()
+        current_audio_data["type"] = "input_audio_buffer.append"
+        current_audio_data["audio"] = data_base64
+        current_audio_data["sequenceNumber"] = Int(RecordAudioManager.shared.count)
+        RecordAudioManager.shared.local_record_Array.append(current_audio_data)
+        if RecordAudioManager.shared.count == 0
+            || RecordAudioManager.shared.local_record_Array.count == 1 {
+            RecordAudioManager.shared.sendMessageOneByOne()
+        }
+        RecordAudioManager.shared.count += 1
+        
+        // 6) Post RMS for your UI
+        NotificationCenter.default.post(
+            name: NSNotification.Name("showMonitorAudioDataView"),
+            object: ["rmsValue": rmsValue]
+        )
+    } else {
+        print("AudioUnitRender failed with status: \(status)")
     }
+    
+    return noErr
+} 
     func sendMessageOneByOne(){
         if self.local_record_Array.count <= 0{
             return

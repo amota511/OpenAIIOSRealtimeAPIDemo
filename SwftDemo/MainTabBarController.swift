@@ -43,7 +43,7 @@ class MainTabBarController: UITabBarController {
         )
         
         // Assign all tabs to the UITabBarController
-        viewControllers = [checkInVC, progressVC, talkThroughVC]
+        viewControllers = [checkInVC, progressVC]
         
         tabBar.tintColor = GlobalColors.primaryButton
     }

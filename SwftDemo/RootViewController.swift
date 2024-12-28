@@ -3,7 +3,7 @@ import UIKit
 class RootViewController: UIViewController {
 
     lazy var audioVolumeView = {
-        let view = AudioVisualizerView(frame: CGRect(x: UIScreen.main.bounds.size.width/2-200/2, y: 30, width: 200, height: 100))
+        let view = AudioVisualizerView(frame:.zero)
 
         view.backgroundColor = .clear
         return view
@@ -78,10 +78,28 @@ class RootViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = GlobalColors.mainBackground
         
-        view.addSubview(startSessionButton)
-        view.addSubview(monitorAudioDataView)
+        view.addSubview(timerLabel)
+        NSLayoutConstraint.activate([
+            timerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            timerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        ])
         
+        view.addSubview(monitorAudioDataView)
         monitorAudioDataView.addSubview(audioVolumeView)
+        
+        NSLayoutConstraint.activate([
+            monitorAudioDataView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            monitorAudioDataView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            monitorAudioDataView.widthAnchor.constraint(equalToConstant: 200),
+            monitorAudioDataView.heightAnchor.constraint(equalToConstant: 100)
+        ])
+        
+        // Ensure audioVolumeView is centered horizontally and vertically
+        audioVolumeView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            audioVolumeView.centerXAnchor.constraint(equalTo: monitorAudioDataView.centerXAnchor),
+            audioVolumeView.centerYAnchor.constraint(equalTo: monitorAudioDataView.centerYAnchor)
+        ])
         
         startSessionButton.addTarget(self, action: #selector(clickSessionButton(_:)), for: .touchUpInside)
         
@@ -98,62 +116,6 @@ class RootViewController: UIViewController {
             selector: #selector(handleUserStartToSpeak),
             name: NSNotification.Name(rawValue: "UserStartToSpeek"),
             object: nil
-        )
-        
-        view.addSubview(timerLabel)
-        NSLayoutConstraint.activate([
-            timerLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            timerLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: -80)
-        ])
-        
-        let habitsLabel = UILabel()
-        habitsLabel.text = "Habits"
-        habitsLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        habitsLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(habitsLabel)
-        
-        NSLayoutConstraint.activate([
-            habitsLabel.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: 8),
-            habitsLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            habitsLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
-        ])
-        habitsLabel.textColor = GlobalColors.primaryText
-        
-        view.addSubview(partialBlurTableView)
-        partialBlurTableView.delegate = self
-        partialBlurTableView.dataSource = self
-        NSLayoutConstraint.activate([
-            partialBlurTableView.topAnchor.constraint(equalTo: habitsLabel.bottomAnchor, constant: 8),
-            partialBlurTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            partialBlurTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            partialBlurTableView.heightAnchor.constraint(equalToConstant: 200)
-        ])
-        
-        partialBlurTableView.backgroundColor = GlobalColors.mainBackground
-        
-        view.addSubview(bottomBlurView)
-        NSLayoutConstraint.activate([
-            bottomBlurView.leadingAnchor.constraint(equalTo: partialBlurTableView.leadingAnchor),
-            bottomBlurView.trailingAnchor.constraint(equalTo: partialBlurTableView.trailingAnchor),
-            bottomBlurView.bottomAnchor.constraint(equalTo: partialBlurTableView.bottomAnchor),
-            bottomBlurView.heightAnchor.constraint(equalToConstant: 50)
-        ])
-        
-        partialBlurTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
-        
-        view.addSubview(profileButton)
-        NSLayoutConstraint.activate([
-            profileButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            profileButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            profileButton.widthAnchor.constraint(equalToConstant: 45),
-            profileButton.heightAnchor.constraint(equalToConstant: 45)
-        ])
-        
-        profileButton.tintColor = UIColor(
-            red: 80.0/255.0,
-            green: 80.0/255.0,
-            blue: 80.0/255.0,
-            alpha: 1.0
         )
         
         if #available(iOS 14.0, *) {
@@ -178,15 +140,8 @@ class RootViewController: UIViewController {
         NSLayoutConstraint.activate([
             startSessionButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             startSessionButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            startSessionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            startSessionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -60),
             startSessionButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
-        
-        NSLayoutConstraint.activate([
-            monitorAudioDataView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
-            monitorAudioDataView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            monitorAudioDataView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            monitorAudioDataView.heightAnchor.constraint(equalToConstant: 190)
         ])
     }
     
@@ -210,7 +165,6 @@ class RootViewController: UIViewController {
     
     @objc func clickSessionButton(_ sender: Any) {
         if WebSocketManager.shared.connected_status == "connected" {
-            // 2) Just stop the timer but do NOT reset time here
             sessionTimer?.invalidate()
             sessionTimer = nil
             
@@ -226,6 +180,9 @@ class RootViewController: UIViewController {
                 PlayAudioCotinuouslyManager.shared.audio_event_Queue.removeAll()
                 RecordAudioManager.shared.pauseCaptureAudio()
                 WebSocketManager.shared.socket.disconnect()
+
+                // Summarize conversation after session ends
+                self.summarizeDailyConversation()
             }
             alertVC.addAction(cancelAction)
             alertVC.addAction(confirAction)
@@ -309,7 +266,25 @@ class RootViewController: UIViewController {
         } else {
             sessionTimer?.invalidate()
             sessionTimer = nil
+            // 3) End the real-time connection
+            WebSocketManager.shared.socket.disconnect()
+
+            // Summarize conversation after timer ends
+            summarizeDailyConversation()
+
+            // 4) Disable the Start Session button
+            startSessionButton.isEnabled = false
         }
+    }
+
+    // Add a helper to send conversation off for summarizing
+    private func summarizeDailyConversation() {
+        let conversation = WebSocketManager.shared.getAllConversationText()
+        
+        // Stub for sending conversation to ChatGPT (or other summarizing service).
+        // Currently just prints a placeholder summary.
+        print("Sending conversation to ChatGPT for summary:\n\(conversation)")
+        print("ChatGPT summary of the day: [Placeholder summary response here]")
     }
 }
 
