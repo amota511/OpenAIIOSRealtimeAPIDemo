@@ -7,21 +7,41 @@ class ProgressViewController: UIViewController,
     // Create a single table
     private let tableView = UITableView(frame: .zero, style: .grouped)
     
-    // Keep the dayTitles or rename as needed
-    private let dayTitles = [
-        "Today, December 24th 2024",
-        "Yesterday, December 23rd 2024",
-        "Sunday, December 22nd 2024",
-        "Saturday, December 21st 2024"
-    ]
+    // 1) Define the StoryItem struct
+    private struct StoryItem: Codable {
+        let date: String
+        let story: String
+    }
+    
+    // 2) Replace the old dayTitles array with a new stories array
+    private var stories = [StoryItem]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         overrideUserInterfaceStyle = .light
+        
+        // Load array from UserDefaults under key "Stories"
+        loadStoriesFromUserDefaults()
+        
         setupViews()
         setupTable()
-        
         view.backgroundColor = GlobalColors.mainBackground
+    }
+    
+    // 3) Decode from UserDefaults and reload table
+    private func loadStoriesFromUserDefaults() {
+        let defaults = UserDefaults.standard
+        guard let data = defaults.data(forKey: "Stories") else {
+            print("No stories found in UserDefaults.")
+            return
+        }
+        do {
+            let decoded = try JSONDecoder().decode([StoryItem].self, from: data)
+            stories = decoded
+            tableView.reloadData()
+        } catch {
+            print("Failed to decode stories: \(error)")
+        }
     }
     
     private func setupViews() {
@@ -76,11 +96,12 @@ class ProgressViewController: UIViewController,
     // MARK: - UITableViewDataSource
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return dayTitles.count
+        return stories.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return dayTitles[section]
+        // Use the date field as the section header
+        return stories[section].date
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -93,10 +114,10 @@ class ProgressViewController: UIViewController,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.text = """
-        This is example text for the body of each section.
-        Replace it with whatever text or controls you need.
-        """
+        
+        // Use the story field as the cell text
+        cell.textLabel?.text = stories[indexPath.section].story
+
         cell.backgroundColor = GlobalColors.mainBackground
         cell.textLabel?.textColor = GlobalColors.primaryText
         return cell
