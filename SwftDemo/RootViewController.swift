@@ -93,6 +93,8 @@ class RootViewController: UIViewController {
 
     private let oneDayInterval = 24.0 * 60.0 * 60.0
 
+    // Add a property for RealTimeApiWebRTCMainVC
+    private var realTimeAPI = RealTimeApiWebRTCMainVC()
 
     // Store summarized text in UserDefaults with an existing array, under key "Stories"
     private func storeSummarizedStory(_ summary: String) {
