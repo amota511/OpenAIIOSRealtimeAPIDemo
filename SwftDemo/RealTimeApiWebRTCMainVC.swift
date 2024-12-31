@@ -159,7 +159,10 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         let body: [String: Any] = [
                     "model": "gpt-4o-realtime-preview-2024-12-17",
-                    "voice": "sage"
+                    "voice": "sage",
+                    "modalities": ["audio", "text"],
+                    "instructions": "Only speak chinese!",
+                    "turn_detection": NSNull(),
                 ]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
         
