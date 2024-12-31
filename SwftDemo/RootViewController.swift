@@ -1,4 +1,6 @@
 import UIKit
+import AVFoundation
+import AVFAudio
 
 class RootViewController: UIViewController {
 
@@ -123,6 +125,75 @@ class RootViewController: UIViewController {
         }
     }
     
+    // 1) Add properties to handle metering
+    private var audioRecorder: AVAudioRecorder?
+    private var audioLevelTimer: Timer?
+    
+    // 2) Start local mic monitoring to animate audioVolumeView
+    private func startMonitoringUserAudio() {
+        let audioAuthStatus = AVCaptureDevice.authorizationStatus(for: .audio)
+        if audioAuthStatus == .notDetermined {
+            AVAudioSession.sharedInstance().requestRecordPermission { granted in
+                if granted {
+                    DispatchQueue.main.async {
+                        self.startMonitoringUserAudio()
+                    }
+                }
+            }
+            return
+        }
+        // Make sure the session allows recording
+        try? AVAudioSession.sharedInstance().setCategory(.playAndRecord)
+        
+        let settings: [String: Any] = [
+            AVSampleRateKey: 44100.0,
+            AVFormatIDKey: Int(kAudioFormatAppleLossless),
+            AVNumberOfChannelsKey: 2,
+            AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue
+        ]
+        
+        // Record into /dev/null (we only care about metering, not saving audio)
+        guard let recorderUrl = URL(string: "/dev/null"),
+              let recorder = try? AVAudioRecorder(url: recorderUrl, settings: settings) else {
+            return
+        }
+        
+        self.audioRecorder = recorder
+        recorder.isMeteringEnabled = true
+        recorder.prepareToRecord()
+        recorder.record()
+        
+        // Update the UI ~10 times/sec based on mic level
+        self.audioLevelTimer?.invalidate()
+        self.audioLevelTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+            guard recorder.isRecording else { return }
+            recorder.updateMeters()
+
+            var scale = 0.0
+
+            // Only compute actual volume if session is active
+            if self.realTimeAPI.connect_status == "connected" {
+                let avgPower = recorder.averagePower(forChannel: 0)
+                if avgPower <= -60 {
+                    scale = 0.0
+                } else if avgPower >= -5 {
+                    scale = 1.0
+                } else {
+                    scale = Double((avgPower + 60) * 1.5 / 100.0)
+                    // Low pass filter
+                    if scale < 0.3 { scale = 0.0 }
+                }
+            }
+            
+            // If not connected, scale remains 0
+
+            DispatchQueue.main.async {
+                self.audioVolumeView.updateCircles(with: Float(scale))
+            }
+        }
+        RunLoop.current.add(self.audioLevelTimer!, forMode: .common)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = GlobalColors.mainBackground
@@ -201,6 +272,8 @@ class RootViewController: UIViewController {
             name: NSNotification.Name("RealTimeApiStatusChanged"),
             object: nil
         )
+        
+        startMonitoringUserAudio()
     }
     
     override func viewDidLayoutSubviews() {
@@ -265,13 +338,14 @@ class RootViewController: UIViewController {
     }
     
     @objc func handleAIIsPlayingAudio() {
-        // Trigger the visualizer animation
-        self.audioVolumeView.animateAiSpeaking()
+        // For an actual remote audio track, measure its volume similarly.
+        // For now, do a placeholder animation:
+        self.audioVolumeView.updateCircles(with: 0.8)
     }
     
     @objc func handleUserStartToSpeak() {
-        // Reset the circles to black/white
-        audioVolumeView.resetCirclesForUserSpeaking()
+        // Possibly start local mic monitoring here too.
+        self.audioVolumeView.updateCircles(with: 0.5)
     }
     
     @objc private func showFallbackMenu() {
@@ -401,13 +475,13 @@ class RootViewController: UIViewController {
     private func updateCheckInButton() {
         let defaults = UserDefaults.standard
         // If there's a last check-in and it's the same calendar day, disable the button
-        if let lastCheckIn = defaults.object(forKey: "lastCheckIn") as? Date,
-           Calendar.current.isDate(lastCheckIn, inSameDayAs: Date()) {
-            startSessionButton.isEnabled = false
-            startSessionButton.backgroundColor = .lightGray
-            startSessionButton.setTitle("Already checked in", for: .normal)
-            return
-        }
+        // if let lastCheckIn = defaults.object(forKey: "lastCheckIn") as? Date,
+        //    Calendar.current.isDate(lastCheckIn, inSameDayAs: Date()) {
+        //     startSessionButton.isEnabled = false
+        //     startSessionButton.backgroundColor = .lightGray
+        //     startSessionButton.setTitle("Already checked in", for: .normal)
+        //     return
+        // }
         
         // Otherwise, choose the button state based on realTimeAPI.connect_status
         switch realTimeAPI.connect_status {
