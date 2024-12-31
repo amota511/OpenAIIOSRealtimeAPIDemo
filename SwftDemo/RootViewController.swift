@@ -304,10 +304,6 @@ class RootViewController: UIViewController {
     private func endSessionCleanupAndSummarize() {
         // Instead of WebSocketManager.shared, call RealTimeApiWebRTCMainVC stopAll()
         realTimeAPI.stopAll()
-        
-        // Remove extra calls to managers that were part of the old approach:
-        // PlayAudioCotinuouslyManager.shared.audio_event_Queue.removeAll()
-        // RecordAudioManager.shared.pauseCaptureAudio()
 
         // Reset timer UI
         remainingTime = 120

@@ -12,9 +12,6 @@
 		A5406FC72D1A7BD800ACB75C /* ProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5406FC62D1A7BD800ACB75C /* ProgressViewController.swift */; };
 		A5406FC92D1B0D4900ACB75C /* TalkThroughViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5406FC82D1B0D4900ACB75C /* TalkThroughViewController.swift */; };
 		A56240232D20A8C800E707D3 /* AudioVisualizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56240222D20A8C800E707D3 /* AudioVisualizerView.swift */; };
-		A56240252D20A8D600E707D3 /* PlayAudioCotinuouslyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56240242D20A8D600E707D3 /* PlayAudioCotinuouslyManager.swift */; };
-		A56240272D20A8DC00E707D3 /* RecordAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56240262D20A8DC00E707D3 /* RecordAudioManager.swift */; };
-		A56240292D20A8E500E707D3 /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56240282D20A8E500E707D3 /* WebSocketManager.swift */; };
 		A5C226372D1DF6180023C824 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C226362D1DF6180023C824 /* OnboardingViewController.swift */; };
 		A5C226392D1E0CF10023C824 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C226382D1E0CF10023C824 /* StoreKit.framework */; };
 		A5C2263B2D1E13CE0023C824 /* UpsellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C2263A2D1E13CE0023C824 /* UpsellViewController.swift */; };
@@ -33,9 +30,6 @@
 		A5406FC62D1A7BD800ACB75C /* ProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressViewController.swift; sourceTree = "<group>"; };
 		A5406FC82D1B0D4900ACB75C /* TalkThroughViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkThroughViewController.swift; sourceTree = "<group>"; };
 		A56240222D20A8C800E707D3 /* AudioVisualizerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioVisualizerView.swift; sourceTree = "<group>"; };
-		A56240242D20A8D600E707D3 /* PlayAudioCotinuouslyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayAudioCotinuouslyManager.swift; sourceTree = "<group>"; };
-		A56240262D20A8DC00E707D3 /* RecordAudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordAudioManager.swift; sourceTree = "<group>"; };
-		A56240282D20A8E500E707D3 /* WebSocketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
 		A565352AF458640234995DA2 /* Pods-SwftDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwftDemo.debug.xcconfig"; path = "Target Support Files/Pods-SwftDemo/Pods-SwftDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		A5C226362D1DF6180023C824 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		A5C226382D1E0CF10023C824 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -111,11 +105,8 @@
 				A98D89772CDC9DEA00389BF4 /* RootViewController.swift */,
 				A9FFC45F2CB7B7C6006CBCB7 /* SwftDemo-Bridging-Header.h */,
 				A5C226362D1DF6180023C824 /* OnboardingViewController.swift */,
-				A56240282D20A8E500E707D3 /* WebSocketManager.swift */,
 				A5D39F2B2D1E2DF300F34ABB /* GlobalColors.swift */,
 				A5C2263A2D1E13CE0023C824 /* UpsellViewController.swift */,
-				A56240242D20A8D600E707D3 /* PlayAudioCotinuouslyManager.swift */,
-				A56240262D20A8DC00E707D3 /* RecordAudioManager.swift */,
 				A56240222D20A8C800E707D3 /* AudioVisualizerView.swift */,
 				A5406FC42D1A7BC900ACB75C /* MainTabBarController.swift */,
 				A5406FC82D1B0D4900ACB75C /* TalkThroughViewController.swift */,
@@ -272,15 +263,12 @@
 				A9AC386E2B04B35E0088D5BB /* AppDelegate.swift in Sources */,
 				A5D39F322D208E3C00F34ABB /* RealTimeApiWebRTCMainVC.swift in Sources */,
 				A5406FC52D1A7BC900ACB75C /* MainTabBarController.swift in Sources */,
-				A56240272D20A8DC00E707D3 /* RecordAudioManager.swift in Sources */,
 				A56240232D20A8C800E707D3 /* AudioVisualizerView.swift in Sources */,
 				A9FFC45C2CB7B799006CBCB7 /* Extention+MBProgress.swift in Sources */,
 				A5406FC72D1A7BD800ACB75C /* ProgressViewController.swift in Sources */,
 				A9FFC45B2CB7B799006CBCB7 /* MaciroDefine.swift in Sources */,
 				A5C226372D1DF6180023C824 /* OnboardingViewController.swift in Sources */,
-				A56240252D20A8D600E707D3 /* PlayAudioCotinuouslyManager.swift in Sources */,
 				A98D89792CDC9DEA00389BF4 /* RootViewController.swift in Sources */,
-				A56240292D20A8E500E707D3 /* WebSocketManager.swift in Sources */,
 				A5C2263B2D1E13CE0023C824 /* UpsellViewController.swift in Sources */,
 				A5406FC92D1B0D4900ACB75C /* TalkThroughViewController.swift in Sources */,
 				A5D39F2C2D1E2DF300F34ABB /* GlobalColors.swift in Sources */,
@@ -428,7 +416,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmotayne.poof2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -466,7 +454,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmotayne.poof2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

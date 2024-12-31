@@ -4,41 +4,47 @@ import AVFoundation
 
 class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCDataChannelDelegate {
     
+    private let myVolumeView: AudioVisualizerView = {
+        let view = AudioVisualizerView()
+        // Configure the view if desired
+        return view
+    }()
+    
     private let statusButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Start With WebRTC", for: .normal)
         button.layer.borderWidth = 1.0
         button.layer.borderColor = UIColor.blue.cgColor
         button.layer.cornerRadius = 8
-        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Start With WebRTC", for: .normal)
         return button
-    }()
-    
-    private let myVolumeView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Add programmatic subviews and constraints
-        view.addSubview(statusButton)
+
+        // Add subviews & apply Auto Layout
         view.addSubview(myVolumeView)
+        view.addSubview(statusButton)
+        myVolumeView.translatesAutoresizingMaskIntoConstraints = false
+        statusButton.translatesAutoresizingMaskIntoConstraints = false
+
         NSLayoutConstraint.activate([
-            statusButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            statusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            statusButton.widthAnchor.constraint(equalToConstant: 200),
-            statusButton.heightAnchor.constraint(equalToConstant: 44),
-            
-            myVolumeView.topAnchor.constraint(equalTo: statusButton.bottomAnchor, constant: 20),
+            // Center and size the volume view
             myVolumeView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            myVolumeView.widthAnchor.constraint(equalToConstant: 200),
-            myVolumeView.heightAnchor.constraint(equalToConstant: 100)
+            myVolumeView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            myVolumeView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            myVolumeView.heightAnchor.constraint(equalToConstant: 100),
+
+            // Add more padding to the status button
+            statusButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            statusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
-        
-        //Monitor Audio Volum Change
+
+        statusButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
+
+        statusButton.addTarget(self, action: #selector(clickStatusButton(_:)), for: .touchUpInside)
+
+        // Launch audio monitoring
         DispatchQueue.main.async {
             self.monitorAudioTrackLeval()
         }
@@ -55,7 +61,7 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
     }
     //MARK: Handle Status
     var connect_status = "notConnect" // notConnect connecting connected
-    @objc func clickStatusButton(_ sender: UIButton) {
+    @objc func clickStatusButton(_ sender: Any) {
         if connect_status == "notConnect"{
             connectWebSockt()
         }else if connect_status == "connecting"{
@@ -78,7 +84,6 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
             if self.connect_status == "notConnect"{
                 self.statusButton.setTitle("Start With WebRTC", for: .normal)
                 self.stopAll()
-                self.audioVolumeView.removeFromSuperview()
             }else if self.connect_status == "connecting"{
                 self.statusButton.setTitle("Connecting With WebRTC", for: .normal)
             }else if self.connect_status == "connected"{
@@ -154,7 +159,7 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         let body: [String: Any] = [
                     "model": "gpt-4o-realtime-preview-2024-12-17",
-                    "voice": "verse"
+                    "voice": "sage"
                 ]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
         
@@ -246,7 +251,7 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
     }
     //RTCPeerConnectionDelegate
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange stateChanged: RTCSignalingState) {
-        //print("RTCPeerConnectionDelegate---1")
+        print("RTCPeerConnectionDelegate---1")
     }
     func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
         print("RTCPeerConnectionDelegate---2---connected stram with OpneAI form WebRTC")
@@ -265,29 +270,29 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
         }
     }
     func peerConnection(_ peerConnection: RTCPeerConnection, didRemove stream: RTCMediaStream) {
-        //print("RTCPeerConnectionDelegate---3")
+        print("RTCPeerConnectionDelegate---3")
     }
     func peerConnectionShouldNegotiate(_ peerConnection: RTCPeerConnection) {
-        //print("RTCPeerConnectionDelegate---4")
+        print("RTCPeerConnectionDelegate---4")
     }
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceConnectionState) {
-        //print("RTCPeerConnectionDelegate---5")
+        print("RTCPeerConnectionDelegate---5")
     }
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceGatheringState) {
-        //print("RTCPeerConnectionDelegate---6")
+        print("RTCPeerConnectionDelegate---6")
     }
     func peerConnection(_ peerConnection: RTCPeerConnection, didGenerate candidate: RTCIceCandidate) {
-        //print("RTCPeerConnectionDelegate---7")
+        print("RTCPeerConnectionDelegate---7")
     }
     func peerConnection(_ peerConnection: RTCPeerConnection, didRemove candidates: [RTCIceCandidate]) {
-        //print("RTCPeerConnectionDelegate---8")
+        print("RTCPeerConnectionDelegate---8")
     }
     func peerConnection(_ peerConnection: RTCPeerConnection, didOpen dataChannel: RTCDataChannel) {
-        //print("RTCPeerConnectionDelegate---9")
+        print("RTCPeerConnectionDelegate---9")
     }
     //RTCDataChannelDelegate
     func dataChannelDidChangeState(_ dataChannel: RTCDataChannel) {
-        //print("RTCDataChannelDelegate---11")
+        print("RTCDataChannelDelegate---11")
     }
     func dataChannel(_ dataChannel: RTCDataChannel, didReceiveMessageWith buffer: RTCDataBuffer) {
         //print("RTCDataChannelDelegate---22")
@@ -297,14 +302,7 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
     //Monitor Audio Volum Change
     var audioRecorder: AVAudioRecorder?
     var audioPeadkerChangeTimer: Timer?
-    lazy var audioVolumeView = {
-        let view = AudioVisualizerView(frame: CGRect(x: UIScreen.main.bounds.size.width/2-200/2, y: 30, width: 200, height: 100))
-        return view
-    }()
     func monitorAudioTrackLeval(){
-        
-        audioVolumeView.removeFromSuperview()
-        self.myVolumeView.addSubview(audioVolumeView)
         
         //import AVFoundation
         let audioAuthStatus = AVCaptureDevice.authorizationStatus(for: AVMediaType.audio)
@@ -358,9 +356,9 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
                 //print("Monitor Audio Volum Change--scale--\(nowScale)")
                 DispatchQueue.main.async {
                     if self.connect_status == "connected"{
-                        self.audioVolumeView.updateCircles(with: Float(nowScale))
+                        self.myVolumeView.updateCircles(with: Float(nowScale))
                     }else{
-                        self.audioVolumeView.updateCircles(with: Float(0))
+                        self.myVolumeView.updateCircles(with: Float(0))
                     }
                 }
             }
