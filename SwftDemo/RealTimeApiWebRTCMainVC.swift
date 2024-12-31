@@ -19,6 +19,9 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
         return button
     }()
     
+    // Add a property to store both sides of the conversation
+    public var conversationHistory = [String]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -304,8 +307,15 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
         print("RTCDataChannelDelegate---11")
     }
     func dataChannel(_ dataChannel: RTCDataChannel, didReceiveMessageWith buffer: RTCDataBuffer) {
-        //print("RTCDataChannelDelegate---22")
-        print("Message received: Invalid message: \(String(data: buffer.data, encoding: .utf8) ?? "Invalid message")")
+        let messageString = String(data: buffer.data, encoding: .utf8) ?? "Invalid message"
+        // Log the assistant's message
+        conversationHistory.append("Assistant: \(messageString)")
+        print("Message received: \(messageString)")
+    }
+    
+    // If you wish to capture the user’s side, call this from wherever you have their text
+    func addUserMessage(_ text: String) {
+        conversationHistory.append("User: \(text)")
     }
     
     //Monitor Audio Volum Change

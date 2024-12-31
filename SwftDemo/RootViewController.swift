@@ -328,19 +328,14 @@ class RootViewController: UIViewController {
         // Stop visualizer from moving
         audioVolumeView.resetCirclesForUserSpeaking()
 
-        // Summarize conversation after session ends.
-        summarizeDailyConversation()
+        // Retrieve and send the conversation for summarizing
+        let conversation = realTimeAPI.conversationHistory.joined(separator: "\n")
+        summarizeDailyConversation(conversation)
     }
 
     // Add a helper to send conversation off for summarizing
-    private func summarizeDailyConversation() {
-        let conversation = "No conversation text available. (Update to use RealTimeApiWebRTCMainVC's data if desired.)"
-        
-        // Remove (or retain if you like) the local print statements:
-        // print("Sending conversation to ChatGPT for summary:\n\(conversation)")
-        // print("ChatGPT summary of the day: [Placeholder summary response here]")
-
-        // Replace with an actual call to OpenAI (example for gpt-3.5-turbo)
+    private func summarizeDailyConversation(_ conversation: String) {
+        // Remove placeholder text; pass in the actual conversation
         guard let url = URL(string: "https://api.openai.com/v1/chat/completions") else {
             print("Invalid URL")
             return

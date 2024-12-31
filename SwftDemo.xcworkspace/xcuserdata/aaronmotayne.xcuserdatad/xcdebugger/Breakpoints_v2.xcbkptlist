@@ -16,7 +16,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "224"
             endingLineNumber = "224"
-            landmarkName = "sendSDPToServer(_:clientSecret:successBlock:failBlock:)"
+            landmarkName = "createOffer(successBlock:failBlock:)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -64,8 +64,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "100"
             endingLineNumber = "100"
-            landmarkName = "RealTimeApiWebRTCMainVC"
-            landmarkType = "3">
+            landmarkName = "refreshStatusButtonUI()"
+            landmarkType = "7">
             <Locations>
                <Location
                   uuid = "DE39EF4A-91FB-4051-B5F1-28681A928AD7 - 7784f59db79daf71"
@@ -304,7 +304,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "367"
             endingLineNumber = "367"
-            landmarkName = "summarizeDailyConversation()"
+            landmarkName = "summarizeDailyConversation(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -320,7 +320,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "353"
             endingLineNumber = "353"
-            landmarkName = "summarizeDailyConversation()"
+            landmarkName = "summarizeDailyConversation(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -528,7 +528,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "282"
             endingLineNumber = "282"
-            landmarkName = "peerConnection(_:didRemove:)"
+            landmarkName = "peerConnection(_:didAdd:)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -576,7 +576,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "285"
             endingLineNumber = "285"
-            landmarkName = "peerConnectionShouldNegotiate(_:)"
+            landmarkName = "peerConnection(_:didRemove:)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -624,7 +624,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "288"
             endingLineNumber = "288"
-            landmarkName = "peerConnection(_:didChange:)"
+            landmarkName = "peerConnectionShouldNegotiate(_:)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -720,7 +720,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "294"
             endingLineNumber = "294"
-            landmarkName = "peerConnection(_:didGenerate:)"
+            landmarkName = "peerConnection(_:didChange:)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -768,7 +768,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "298"
             endingLineNumber = "298"
-            landmarkName = "peerConnection(_:didRemove:)"
+            landmarkName = "peerConnection(_:didGenerate:)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -816,8 +816,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "302"
             endingLineNumber = "302"
-            landmarkName = "RealTimeApiWebRTCMainVC"
-            landmarkType = "3">
+            landmarkName = "peerConnection(_:didOpen:)"
+            landmarkType = "7">
             <Locations>
                <Location
                   uuid = "BA77C872-FE32-44CE-852F-57C6AD0E5C69 - 3a342d52e0425570"
@@ -864,8 +864,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "311"
             endingLineNumber = "311"
-            landmarkName = "RealTimeApiWebRTCMainVC"
-            landmarkType = "3">
+            landmarkName = "dataChannel(_:didReceiveMessageWith:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
