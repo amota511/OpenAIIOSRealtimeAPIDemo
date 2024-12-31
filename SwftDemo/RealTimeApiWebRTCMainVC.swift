@@ -89,6 +89,12 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
             }else if self.connect_status == "connected"{
                 self.statusButton.setTitle("Connected With WebRTC", for: .normal)
             }
+            
+            // Notify RootViewController to refresh its button
+            NotificationCenter.default.post(
+                name: NSNotification.Name("RealTimeApiStatusChanged"),
+                object: self.connect_status
+            )
         }
     }
     //MARK: Connect WebSockt

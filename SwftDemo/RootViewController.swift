@@ -194,6 +194,13 @@ class RootViewController: UIViewController {
             startSessionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -60),
             startSessionButton.heightAnchor.constraint(equalToConstant: 50)
         ])
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleRealTimeStatusChanged(_:)),
+            name: NSNotification.Name("RealTimeApiStatusChanged"),
+            object: nil
+        )
     }
     
     override func viewDidLayoutSubviews() {
@@ -215,7 +222,6 @@ class RootViewController: UIViewController {
     }
     
     @objc func clickSessionButton(_ sender: Any) {
-        // Replace WebSocketManager logic with RealTimeApiWebRTCMainVC
         if realTimeAPI.connect_status == "connected" {
             // Same end-session prompt
             sessionTimer?.invalidate()
@@ -229,16 +235,21 @@ class RootViewController: UIViewController {
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
             let endSessionAction = UIAlertAction(title: "End Session", style: .default) { alert in
                 self.endSessionCleanupAndSummarize()
+                // After ending a session, we force an update
+                self.updateCheckInButton()
             }
             alertVC.addAction(cancelAction)
             alertVC.addAction(endSessionAction)
             getCurrentVc().present(alertVC, animated: true)
             
         } else if realTimeAPI.connect_status == "connecting" {
-            startSessionButton.setTitle("Connecting...", for: .normal)
+            // Just refresh UI if user taps again
+            updateCheckInButton()
         } else {
             // If not connected, start connecting
             realTimeAPI.connectWebSockt()
+            // Immediately update the button to show "Connecting..."
+            updateCheckInButton()
         }
     }
     
@@ -302,10 +313,10 @@ class RootViewController: UIViewController {
 
     // 1) Factor the common end-session logic into one helper method
     private func endSessionCleanupAndSummarize() {
-        // Instead of WebSocketManager.shared, call RealTimeApiWebRTCMainVC stopAll()
         realTimeAPI.stopAll()
+        realTimeAPI.connect_status = "notConnect"
 
-        // Reset timer UI
+        // Reset timer UI, disable button, etc.
         remainingTime = 120
         timerLabel.text = "2:00"
 
@@ -317,7 +328,7 @@ class RootViewController: UIViewController {
         // Stop visualizer from moving
         audioVolumeView.resetCirclesForUserSpeaking()
 
-        // Summarize conversation after session ends (remove old getAllConversationText if needed)
+        // Summarize conversation after session ends.
         summarizeDailyConversation()
     }
 
@@ -394,25 +405,35 @@ class RootViewController: UIViewController {
     // 1) Factor out the logic to check lastCheckIn
     private func updateCheckInButton() {
         let defaults = UserDefaults.standard
-//        if let lastCheckIn = defaults.object(forKey: "lastCheckIn") as? Date {
-            // 1) Check if lastCheckIn is the same calendar day as now
-//            if Calendar.current.isDate(lastCheckIn, inSameDayAs: Date()) {
-//                // If the last check-in is on the same day, disable the button
-//                startSessionButton.isEnabled = false
-//                startSessionButton.setTitle("Already checked in", for: .normal)
-//                startSessionButton.backgroundColor = .lightGray
-//            } else {
-//                // Different calendar day; let them start a new session
-//                startSessionButton.isEnabled = true
-//                startSessionButton.setTitle("Start Check-in", for: .normal)
-//                startSessionButton.backgroundColor = GlobalColors.primaryButton
-//            }
-//        } else {
-            // No prior session at all
+        // If there's a last check-in and it's the same calendar day, disable the button
+        if let lastCheckIn = defaults.object(forKey: "lastCheckIn") as? Date,
+           Calendar.current.isDate(lastCheckIn, inSameDayAs: Date()) {
+            startSessionButton.isEnabled = false
+            startSessionButton.backgroundColor = .lightGray
+            startSessionButton.setTitle("Already checked in", for: .normal)
+            return
+        }
+        
+        // Otherwise, choose the button state based on realTimeAPI.connect_status
+        switch realTimeAPI.connect_status {
+        case "connecting":
+            startSessionButton.isEnabled = false
+            startSessionButton.backgroundColor = .lightGray
+            startSessionButton.setTitle("Connecting...", for: .normal)
+        case "connected":
             startSessionButton.isEnabled = true
-            startSessionButton.setTitle("Start Check-in", for: .normal)
+            startSessionButton.backgroundColor = .systemRed
+            startSessionButton.setTitle("End Session", for: .normal)
+        default: // "notConnect"
+            startSessionButton.isEnabled = true
             startSessionButton.backgroundColor = GlobalColors.primaryButton
-//        }
+            startSessionButton.setTitle("Start Check-in", for: .normal)
+        }
+    }
+
+    @objc private func handleRealTimeStatusChanged(_ notification: Notification) {
+        // The RealTimeApiWebRTCMainVC has updated connect_status, so re-check button state:
+        self.updateCheckInButton()
     }
 }
 
