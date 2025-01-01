@@ -416,7 +416,7 @@ class RootViewController: UIViewController {
         }
 
         let messages: [[String: Any]] = [
-            ["role": "user", "content": "Please summarize day based on this conversation:\n\(conversation)"]
+            ["role": "user", "content": "Summarize the following conversation in 3 or 4 sentences. Only respond with the summary and nothing else. \n\(conversation)"]
         ]
 
         let requestBody: [String: Any] = [
