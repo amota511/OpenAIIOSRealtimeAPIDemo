@@ -493,6 +493,10 @@ class RootViewController: UIViewController {
             startSessionButton.isEnabled = true
             startSessionButton.backgroundColor = .systemRed
             startSessionButton.setTitle("End Session", for: .normal)
+            // Start the timer if it isn't already running
+            if sessionTimer == nil {
+                startTimer()
+            }
         default: // "notConnect"
             startSessionButton.isEnabled = true
             startSessionButton.backgroundColor = GlobalColors.primaryButton
