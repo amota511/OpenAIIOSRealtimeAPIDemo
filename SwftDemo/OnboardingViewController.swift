@@ -26,10 +26,10 @@ class OnboardingViewController: UIViewController {
 
     // An array of step-specific questions
     private let stepPrompts = [
+        "What is your name?",
         "Which goal or habit do you most want to focus on right now?",
-        "What usually stops you from following through on this goal?",
-        "How would you like the app to respond when you’re struggling?",
-        "When and how often would you like check-in(s)?",
+        "What do you find most difficult about staying committed to this goal?",
+        "How would you like our AI to communicate with you?",
         "Imagine you’re looking back 30 days from now—how will you know you’ve made real progress?"
     ]
 

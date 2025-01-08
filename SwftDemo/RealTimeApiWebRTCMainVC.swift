@@ -52,16 +52,16 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
             self.monitorAudioTrackLeval()
         }
     }
-    func initUI(){
-        statusButton.layer.borderWidth = 1.0
-        statusButton.layer.borderColor = UIColor.blue.cgColor
-        statusButton.layer.cornerRadius = 8
-        
-        //Monitor Audio Volum Change
-        DispatchQueue.main.async {
-            self.monitorAudioTrackLeval()
-        }
-    }
+//    func initUI(){
+//        statusButton.layer.borderWidth = 1.0
+//        statusButton.layer.borderColor = UIColor.blue.cgColor
+//        statusButton.layer.cornerRadius = 8
+//        
+//        //Monitor Audio Volum Change
+//        DispatchQueue.main.async {
+//            self.monitorAudioTrackLeval()
+//        }
+//    }
     //MARK: Handle Status
     var connect_status = "notConnect" // notConnect connecting connected
     @objc func clickStatusButton(_ sender: Any) {
@@ -170,6 +170,11 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
             "model": "gpt-4o-realtime-preview-2024-12-17",
             "voice": "sage",
             "modalities": ["audio", "text"],
+//            "turn_detection": [
+//                "type": "server_vad",
+//                "prefix_padding_ms": 400,
+//                "create_response": false
+//            ],
             "instructions": UserDefaults.standard.string(forKey: "GPTSystemString") ?? """
                GPT content: **System Instructions for Behavioral Psychologist AI Model**
                
@@ -298,7 +303,6 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
                
                By following these instructions, you will provide consistent, empathetic, and personalized support to help the user achieve their weight loss goal.
                """,
-            "turn_detection": nil,
         ]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
         
@@ -404,6 +408,7 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
             }catch{
                 //print("Play sound — Set speaker — Failure")
             }
+            updateSessionToDisableVAD()
         }else{
             print("Audio track not found")
         }
@@ -428,6 +433,7 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
     }
     func peerConnection(_ peerConnection: RTCPeerConnection, didOpen dataChannel: RTCDataChannel) {
         print("RTCPeerConnectionDelegate---9")
+        
     }
     //RTCDataChannelDelegate
     func dataChannelDidChangeState(_ dataChannel: RTCDataChannel) {
@@ -526,5 +532,34 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
         dataChannel?.close()
         audioRecorder?.stop()
         audioRecorder = nil
+    }
+    
+    // Send a "session.update" event over the RTCDataChannel to disable VAD
+    func updateSessionToDisableVAD() {
+        guard let dataChannel = dataChannel else {
+            print("No RTCDataChannel available.")
+            return
+        }
+        
+        let sessionUpdateEvent: [String: Any] = [
+            "event_id": "event_disable_vad",
+            "type": "session.update",
+            "session": [
+                "voice": "verse",
+                "turn_detection": [
+                    "create_response": false
+                ],
+            ]
+        ]
+        
+        do {
+            let data = try JSONSerialization.data(withJSONObject: sessionUpdateEvent, options: [])
+            // Construct an RTCDataBuffer for text
+            let buffer = RTCDataBuffer(data: data, isBinary: false)
+            dataChannel.sendData(buffer)
+            print("session.update event to disable VAD was sent via RTCDataChannel.")
+        } catch {
+            print("JSON serialization error:", error)
+        }
     }
 }

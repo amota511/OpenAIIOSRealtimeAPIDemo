@@ -30,6 +30,7 @@
 		A5406FC62D1A7BD800ACB75C /* ProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressViewController.swift; sourceTree = "<group>"; };
 		A5406FC82D1B0D4900ACB75C /* TalkThroughViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkThroughViewController.swift; sourceTree = "<group>"; };
 		A56240222D20A8C800E707D3 /* AudioVisualizerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioVisualizerView.swift; sourceTree = "<group>"; };
+		A562402E2D2CC57D00E707D3 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A565352AF458640234995DA2 /* Pods-SwftDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwftDemo.debug.xcconfig"; path = "Target Support Files/Pods-SwftDemo/Pods-SwftDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		A5C226362D1DF6180023C824 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		A5C226382D1E0CF10023C824 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -115,6 +116,7 @@
 				A98CE87D2C64675A00489AD9 /* Assets.xcassets */,
 				A9FFC4572CB7B773006CBCB7 /* Extention */,
 				A9AC387B2B04B35F0088D5BB /* Info.plist */,
+				A562402E2D2CC57D00E707D3 /* Config.xcconfig */,
 			);
 			path = SwftDemo;
 			sourceTree = "<group>";

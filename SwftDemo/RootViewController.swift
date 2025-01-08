@@ -416,11 +416,11 @@ class RootViewController: UIViewController {
         }
 
         let messages: [[String: Any]] = [
-            ["role": "user", "content": "Summarize the following conversation in 3 or 4 sentences. Only respond with the summary and nothing else. \n\(conversation)"]
+            ["role": "user", "content": "Summarize the given conversation for key takeaways and important learnings to help the user remember what was talked about and what would be important for them to remember from the conversation to meet their goals. Summary should be roughly one paragraph. Refer to the user as you. Write from the perspective of the assistant with the same tone and temperament. \n\(conversation)"]
         ]
 
         let requestBody: [String: Any] = [
-            "model": "o1-mini",
+            "model": "gpt-4o",
             "messages": messages
         ]
 
