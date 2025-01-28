@@ -402,13 +402,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = NTBK7U36KR;
+				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = ASZWX8LTVC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwftDemo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Reason;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "App Need";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We use this to allow you to speak with the AI.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We use your microphone to allow you to speak with your Ai Coach";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -418,8 +419,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.6;
-				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmotayne.poof2;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmotayne.reason;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -440,13 +441,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = NTBK7U36KR;
+				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = ASZWX8LTVC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwftDemo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Reason;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "App Need";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We use this to allow you to speak with the AI.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We use your microphone to allow you to speak with your Ai Coach";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -456,8 +458,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.6;
-				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmotayne.poof2;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmotayne.reason;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

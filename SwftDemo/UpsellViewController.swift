@@ -24,8 +24,8 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
     private lazy var imageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
-        iv.image = UIImage(named: "upsell-image-5")
-        iv.layer.cornerRadius = 200
+        iv.image = UIImage(named: "upsell-image")
+        iv.layer.cornerRadius = 201
         iv.clipsToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv

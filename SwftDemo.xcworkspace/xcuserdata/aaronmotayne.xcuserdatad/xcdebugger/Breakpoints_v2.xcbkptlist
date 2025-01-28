@@ -641,7 +641,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "0C12932C-2317-4BA0-99D6-37E7571EBE1E"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwftDemo/RealTimeApiWebRTCMainVC.swift"
@@ -689,7 +689,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "7BCBC2EC-994A-4D89-B226-D0D30C8E9442"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwftDemo/RealTimeApiWebRTCMainVC.swift"
@@ -737,7 +737,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "62A7E542-CB68-4E35-8A74-E21FFF5ADF5E"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwftDemo/RealTimeApiWebRTCMainVC.swift"
@@ -785,7 +785,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "B6ED805C-FBF8-4A83-B2D5-8BE85651F8CD"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwftDemo/RealTimeApiWebRTCMainVC.swift"
