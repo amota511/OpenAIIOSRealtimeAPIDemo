@@ -3,4 +3,5 @@ target 'SwftDemo' do
   pod 'MBProgressHUD'
   pod 'IQKeyboardManagerSwift'
   pod 'GoogleWebRTC'
+  pod 'RevenueCat'
 end

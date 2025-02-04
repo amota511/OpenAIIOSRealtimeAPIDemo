@@ -98,10 +98,12 @@ EOM
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/RevenueCat/RevenueCat.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/Starscream/Starscream_Privacy.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.bundle"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/RevenueCat/RevenueCat.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/Starscream/Starscream_Privacy.bundle"
 fi
 

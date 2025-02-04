@@ -1,6 +1,7 @@
 import UIKit
 import IQKeyboardManagerSwift
 import StoreKit
+import RevenueCat
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -13,6 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         
         initIQKeyboardManagerSwift()
+        
+        Purchases.configure(withAPIKey: "appl_yNrrltRysQlLBFkWMcIeaNwEwsC")
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = GlobalColors.mainBackground

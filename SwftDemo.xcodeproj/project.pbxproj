@@ -35,7 +35,6 @@
 		A5C226362D1DF6180023C824 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		A5C226382D1E0CF10023C824 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		A5C2263A2D1E13CE0023C824 /* UpsellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpsellViewController.swift; sourceTree = "<group>"; };
-		A5D39F2A2D1E27A400F34ABB /* Subs.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Subs.storekit; sourceTree = "<group>"; };
 		A5D39F2B2D1E2DF300F34ABB /* GlobalColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalColors.swift; sourceTree = "<group>"; };
 		A5D39F312D208E3C00F34ABB /* RealTimeApiWebRTCMainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTimeApiWebRTCMainVC.swift; sourceTree = "<group>"; };
 		A98CE87D2C64675A00489AD9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -83,7 +82,6 @@
 		A9AC38612B04B35D0088D5BB = {
 			isa = PBXGroup;
 			children = (
-				A5D39F2A2D1E27A400F34ABB /* Subs.storekit */,
 				A9AC386C2B04B35E0088D5BB /* SwftDemo */,
 				A9AC386B2B04B35E0088D5BB /* Products */,
 				7214546A0BCEEC157F05F467 /* Pods */,
