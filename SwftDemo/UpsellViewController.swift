@@ -263,6 +263,7 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
                         if result.customerInfo.entitlements["pro"]?.isActive == true {
                             print("Subscription successful!")
                             // Unlock premium content or update your UI accordingly.
+                            showMainTabBar()
                         }
                     } catch {
                         print("Purchase failed: \(error)")
