@@ -35,7 +35,7 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
     private lazy var checkMarkLabel: UILabel = {
         let label = UILabel()
         // Using an SF Symbol for a checkmark:
-        // “checkmark.circle.fill” or “checkmark.seal.fill,” etc.
+        // "checkmark.circle.fill" or "checkmark.seal.fill," etc.
         label.text = "✓ No payment due now"
         label.font = UIFont.systemFont(ofSize: 16)
         label.textAlignment = .center
@@ -58,9 +58,20 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
     
     private lazy var priceDetailsLabel: UILabel = {
         let label = UILabel()
-        label.text = "Just $0.66 per day (19.99/mo)"
+        let fullText = "Just $0.66 per day (19.99/mo)"
+        let attributedString = NSMutableAttributedString(string: fullText)
+        
+        // Set the default color to lightGray
+        attributedString.addAttribute(.foregroundColor, value: UIColor.lightGray, range: NSRange(location: 0, length: fullText.count))
+        
+        // Find the range of "(19.99/mo)" and set it to black
+        if let range = fullText.range(of: "(19.99/mo)") {
+            let nsRange = NSRange(range, in: fullText)
+            attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: nsRange)
+        }
+        
+        label.attributedText = attributedString
         label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = .lightGray
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -167,7 +178,7 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
             checkMarkLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             checkMarkLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
-            // “Try” button below check mark
+            // "Try" button below check mark
             tryButton.topAnchor.constraint(equalTo: checkMarkLabel.bottomAnchor, constant: 24),
             tryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             tryButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -32),
@@ -288,11 +299,11 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         let prompt = """
         Rewrite the below example instructions based on user answers to the following questions:
         
-        1. “What is your name?”
-        2. “Which goal or habit do you most want to focus on right now?
-        3. “What do you find most difficult about staying committed to this goal?
-        4. **“How would you like our AI to communicate with you?” (**
-        5. “Imagine you’re looking back 30 days from now—how will you know you’ve made real progress?
+        1. "What is your name?"
+        2. "Which goal or habit do you most want to focus on right now?"
+        3. "What do you find most difficult about staying committed to this goal?"
+        4. **"How would you like our AI to communicate with you?" (**
+        5. "Imagine you're looking back 30 days from now—how will you know you've made real progress?"
         
         Example Instructions:
         
