@@ -58,14 +58,14 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
     
     private lazy var priceDetailsLabel: UILabel = {
         let label = UILabel()
-        let fullText = "Just $0.66 per day (19.99/mo)"
+        let fullText = "Just $0.66 per day ($19.99/mo)"
         let attributedString = NSMutableAttributedString(string: fullText)
         
         // Set the default color to lightGray
         attributedString.addAttribute(.foregroundColor, value: UIColor.lightGray, range: NSRange(location: 0, length: fullText.count))
         
-        // Find the range of "(19.99/mo)" and set it to black
-        if let range = fullText.range(of: "(19.99/mo)") {
+        // Find the range of "($19.99/mo)" and set it to black
+        if let range = fullText.range(of: "($19.99/mo)") {
             let nsRange = NSRange(range, in: fullText)
             attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: nsRange)
         }
@@ -75,6 +75,34 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    
+    private lazy var termsButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Terms and conditions", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(showTerms), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var privacyButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Privacy Policy", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(showPrivacy), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var legalStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [termsButton, privacyButton])
+        stackView.axis = .horizontal
+        stackView.spacing = 16
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .center
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
     
     private let spinner: UIActivityIndicatorView = {
@@ -103,6 +131,7 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         view.addSubview(checkMarkLabel)
         view.addSubview(tryButton)
         view.addSubview(priceDetailsLabel)
+        view.addSubview(legalStackView)
         view.addSubview(spinner)
         view.addSubview(frostedBackgroundView)
         view.bringSubviewToFront(spinner)
@@ -132,7 +161,9 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
             frostedBackgroundView.centerXAnchor.constraint(equalTo: spinner.centerXAnchor),
             frostedBackgroundView.centerYAnchor.constraint(equalTo: spinner.centerYAnchor),
             frostedBackgroundView.widthAnchor.constraint(equalToConstant: 100),
-            frostedBackgroundView.heightAnchor.constraint(equalToConstant: 100)
+            frostedBackgroundView.heightAnchor.constraint(equalToConstant: 100),
+            legalStackView.topAnchor.constraint(equalTo: priceDetailsLabel.bottomAnchor, constant: 16),
+            legalStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
         
         frostedBackgroundView.isHidden = true  // Hide background by default
@@ -385,6 +416,20 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
             }
         }
         task.resume()
+    }
+    
+    @objc private func showTerms() {
+        let termsVC = LegalViewController(type: .terms)
+        termsVC.modalPresentationStyle = .pageSheet
+        termsVC.modalTransitionStyle = .coverVertical
+        present(termsVC, animated: true)
+    }
+    
+    @objc private func showPrivacy() {
+        let privacyVC = LegalViewController(type: .privacy)
+        privacyVC.modalPresentationStyle = .pageSheet
+        privacyVC.modalTransitionStyle = .coverVertical
+        present(privacyVC, animated: true)
     }
     
     deinit {
