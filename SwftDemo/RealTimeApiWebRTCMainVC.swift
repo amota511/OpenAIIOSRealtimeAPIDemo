@@ -420,7 +420,25 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
         print("RTCPeerConnectionDelegate---4")
     }
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceConnectionState) {
-        print("RTCPeerConnectionDelegate---5")
+        print("ICE Connection state changed to: \(newState)")
+        
+        switch newState {
+        case .failed:
+            print("ICE Connection failed")
+            DispatchQueue.main.async {
+                self.handleConnectionFailure()
+            }
+        case .disconnected:
+            print("ICE Connection disconnected")
+            DispatchQueue.main.async {
+                self.connect_status = "notConnect"
+                self.refreshStatusButtonUI()
+            }
+        case .connected:
+            print("ICE Connection established")
+        default:
+            break
+        }
     }
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCIceGatheringState) {
         print("RTCPeerConnectionDelegate---6")
@@ -447,7 +465,7 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
         print("Message received: \(messageString)")
     }
     
-    // If you wish to capture the user’s side, call this from wherever you have their text
+    // If you wish to capture the user's side, call this from wherever you have their text
     func addUserMessage(_ text: String) {
         conversationHistory.append("User: \(text)")
     }
@@ -561,5 +579,21 @@ class RealTimeApiWebRTCMainVC: UIViewController, RTCPeerConnectionDelegate, RTCD
         } catch {
             print("JSON serialization error:", error)
         }
+    }
+    
+    private func handleConnectionFailure() {
+        // Clean up existing connection
+        stopAll()
+        connect_status = "notConnect"
+        refreshStatusButtonUI()
+        
+        // Show error to user
+        let alert = UIAlertController(
+            title: "Connection Failed",
+            message: "Failed to establish connection. Please check your internet connection and try again.",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        getCurrentVc().present(alert, animated: true)
     }
 }
