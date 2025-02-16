@@ -134,20 +134,58 @@ class RootViewController: UIViewController {
     
     // 2) Start local mic monitoring to animate audioVolumeView
     private func startMonitoringUserAudio() {
+        // Add robust error handling and logging
         let audioAuthStatus = AVCaptureDevice.authorizationStatus(for: .audio)
-        if audioAuthStatus == .notDetermined {
+        
+        switch audioAuthStatus {
+        case .notDetermined:
+            print("Audio permission not determined, requesting...")
             AVAudioSession.sharedInstance().requestRecordPermission { granted in
                 if granted {
+                    print("Audio permission granted")
                     DispatchQueue.main.async {
+                        self.setupAudioSession()
                         self.startMonitoringUserAudio()
+                    }
+                } else {
+                    print("Audio permission denied")
+                    DispatchQueue.main.async {
+                        self.handleAudioPermissionDenied()
                     }
                 }
             }
             return
-        }
-        // Make sure the session allows recording
-        try? AVAudioSession.sharedInstance().setCategory(.playAndRecord)
         
+        case .denied, .restricted:
+            print("Audio permission denied/restricted")
+            handleAudioPermissionDenied()
+            return
+        
+        case .authorized:
+            print("Audio permission already authorized")
+            setupAudioSession()
+            continueAudioMonitoring()
+        
+        @unknown default:
+            print("Unknown audio permission status")
+            handleAudioPermissionDenied()
+            return
+        }
+    }
+    
+    private func setupAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, 
+                                                           mode: .default,
+                                                           options: [.allowBluetooth, .allowBluetoothA2DP, .mixWithOthers])
+            try AVAudioSession.sharedInstance().setActive(true)
+            print("Audio session setup successful")
+        } catch {
+            print("Failed to setup audio session: \(error.localizedDescription)")
+        }
+    }
+    
+    private func continueAudioMonitoring() {
         let settings: [String: Any] = [
             AVSampleRateKey: 44100.0,
             AVFormatIDKey: Int(kAudioFormatAppleLossless),
@@ -155,46 +193,46 @@ class RootViewController: UIViewController {
             AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue
         ]
         
-        // Record into /dev/null (we only care about metering, not saving audio)
-        guard let recorderUrl = URL(string: "/dev/null"),
-              let recorder = try? AVAudioRecorder(url: recorderUrl, settings: settings) else {
-            return
-        }
-        
-        self.audioRecorder = recorder
-        recorder.isMeteringEnabled = true
-        recorder.prepareToRecord()
-        recorder.record()
-        
-        // Update the UI ~10 times/sec based on mic level
-        self.audioLevelTimer?.invalidate()
-        self.audioLevelTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
-            guard recorder.isRecording else { return }
-            recorder.updateMeters()
-
-            var scale = 0.0
-
-            // Only compute actual volume if session is active
-            if self.realTimeAPI.connect_status == "connected" {
-                let avgPower = recorder.averagePower(forChannel: 0)
-                if avgPower <= -60 {
-                    scale = 0.0
-                } else if avgPower >= -5 {
-                    scale = 1.0
-                } else {
-                    scale = Double((avgPower + 60) * 1.5 / 100.0)
-                    // Low pass filter
-                    if scale < 0.3 { scale = 0.0 }
-                }
+        do {
+            guard let recorderUrl = URL(string: "/dev/null") else {
+                print("Failed to create recorder URL")
+                return
             }
             
-            // If not connected, scale remains 0
-
-            DispatchQueue.main.async {
-                self.audioVolumeView.updateCircles(with: Float(scale))
+            let recorder = try AVAudioRecorder(url: recorderUrl, settings: settings)
+            self.audioRecorder = recorder
+            recorder.isMeteringEnabled = true
+            
+            if recorder.prepareToRecord() && recorder.record() {
+                print("Successfully started audio recording/monitoring")
+                setupAudioLevelTimer()
+            } else {
+                print("Failed to start audio recording")
             }
+        } catch {
+            print("Error creating audio recorder: \(error.localizedDescription)")
         }
-        RunLoop.current.add(self.audioLevelTimer!, forMode: .common)
+    }
+    
+    private func handleAudioPermissionDenied() {
+        // Show an alert explaining why we need audio and how to enable it
+        let alert = UIAlertController(
+            title: "Microphone Access Required",
+            message: "This app needs microphone access for the check-in feature. Please enable it in Settings.",
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "Open Settings", style: .default) { _ in
+            if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(settingsUrl)
+            }
+        })
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        DispatchQueue.main.async {
+            self.present(alert, animated: true)
+        }
     }
     
     override func viewDidLoad() {
