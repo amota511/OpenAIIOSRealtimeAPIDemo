@@ -175,11 +175,25 @@ class RootViewController: UIViewController {
     
     private func setupAudioSession() {
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, 
-                                                           mode: .default,
-                                                           options: [.allowBluetooth, .allowBluetoothA2DP, .mixWithOthers])
-            try AVAudioSession.sharedInstance().setActive(true)
+            let audioSession = AVAudioSession.sharedInstance()
+            
+            // Configure for both playback and recording
+            try audioSession.setCategory(.playAndRecord,
+                                       mode: .default,
+                                       options: [.allowBluetooth, .allowBluetoothA2DP, .defaultToSpeaker, .mixWithOthers])
+            
+            // Set preferred sample rate and buffer duration
+            try audioSession.setPreferredSampleRate(44100.0)
+            try audioSession.setPreferredIOBufferDuration(0.005)
+            
+            // Activate the audio session
+            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+            
             print("Audio session setup successful")
+            
+            // Ensure audio is routed to speaker
+            try audioSession.overrideOutputAudioPort(.speaker)
+            
         } catch {
             print("Failed to setup audio session: \(error.localizedDescription)")
         }
@@ -339,20 +353,20 @@ class RootViewController: UIViewController {
     
     @objc func clickSessionButton(_ sender: Any) {
         if realTimeAPI.connect_status == "connected" {
-            // Same end-session prompt
-            sessionTimer?.invalidate()
-            sessionTimer = nil
-            
+            // Don't stop timer here anymore - only show the alert
             let alertVC = UIAlertController(
                 title: "Are you sure you want to end the session?",
                 message: "",
                 preferredStyle: .alert
             )
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-            let endSessionAction = UIAlertAction(title: "End Session", style: .default) { alert in
-                self.endSessionCleanupAndSummarize()
+            let endSessionAction = UIAlertAction(title: "End Session", style: .default) { [weak self] alert in
+                // Only stop timer and cleanup when user confirms
+                self?.sessionTimer?.invalidate()
+                self?.sessionTimer = nil
+                self?.endSessionCleanupAndSummarize()
                 // After ending a session, we force an update
-                self.updateCheckInButton()
+                self?.updateCheckInButton()
             }
             alertVC.addAction(cancelAction)
             alertVC.addAction(endSessionAction)
@@ -550,6 +564,44 @@ class RootViewController: UIViewController {
     @objc private func handleRealTimeStatusChanged(_ notification: Notification) {
         // The RealTimeApiWebRTCMainVC has updated connect_status, so re-check button state:
         self.updateCheckInButton()
+    }
+
+    private func setupAudioLevelTimer() {
+        // Invalidate existing timer if any
+        self.audioLevelTimer?.invalidate()
+        
+        // Create new timer that fires 10 times per second
+        self.audioLevelTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+            guard let self = self,
+                  let recorder = self.audioRecorder,
+                  recorder.isRecording else { return }
+            
+            recorder.updateMeters()
+            var scale = 0.0
+
+            // Only compute actual volume if session is active
+            if self.realTimeAPI.connect_status == "connected" {
+                let avgPower = recorder.averagePower(forChannel: 0)
+                if avgPower <= -60 {
+                    scale = 0.0
+                } else if avgPower >= -5 {
+                    scale = 1.0
+                } else {
+                    scale = Double((avgPower + 60) * 1.5 / 100.0)
+                    // Low pass filter
+                    if scale < 0.3 { scale = 0.0 }
+                }
+            }
+            
+            // If not connected, scale remains 0
+            
+            DispatchQueue.main.async {
+                self.audioVolumeView.updateCircles(with: Float(scale))
+            }
+        }
+        
+        // Make sure timer runs even during scrolling
+        RunLoop.current.add(self.audioLevelTimer!, forMode: .common)
     }
 }
 
