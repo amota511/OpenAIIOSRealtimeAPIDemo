@@ -68,14 +68,14 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
     
     private lazy var priceDetailsLabel: UILabel = {
         let label = UILabel()
-        let fullText = "$19.99 per month after trial"
+        let fullText = "$19.99 USD per month after trial"
         let attributedString = NSMutableAttributedString(string: fullText)
         
         // Set the default color to lightGray
         attributedString.addAttribute(.foregroundColor, value: UIColor.lightGray, range: NSRange(location: 0, length: fullText.count))
         
         // Find the range of "($19.99/mo)" and set it to black
-        if let range = fullText.range(of: "$19.99 per month after trial") {
+        if let range = fullText.range(of: "$19.99 USDper month after trial") {
             let nsRange = NSRange(range, in: fullText)
             attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: nsRange)
         }
