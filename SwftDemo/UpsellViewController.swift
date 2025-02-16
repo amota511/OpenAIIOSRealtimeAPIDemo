@@ -130,6 +130,7 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
     private let spinner: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .large)
         indicator.hidesWhenStopped = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
         return indicator
     }()
     
@@ -155,11 +156,10 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         view.addSubview(tryButton)
         view.addSubview(priceDetailsLabel)
         view.addSubview(legalStackView)
-        view.addSubview(spinner)
         view.addSubview(frostedBackgroundView)
+        view.addSubview(spinner)
+        view.bringSubviewToFront(frostedBackgroundView)
         view.bringSubviewToFront(spinner)
-        
-        spinner.center = view.center
         
         fetchSubscriptionOfferings()
         
@@ -181,8 +181,8 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         setupConstraints()
         
         NSLayoutConstraint.activate([
-            frostedBackgroundView.centerXAnchor.constraint(equalTo: spinner.centerXAnchor),
-            frostedBackgroundView.centerYAnchor.constraint(equalTo: spinner.centerYAnchor),
+            frostedBackgroundView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            frostedBackgroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             frostedBackgroundView.widthAnchor.constraint(equalToConstant: 100),
             frostedBackgroundView.heightAnchor.constraint(equalToConstant: 100),
             legalStackView.topAnchor.constraint(equalTo: priceDetailsLabel.bottomAnchor, constant: 16),
@@ -252,7 +252,16 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
             // Legal stack view with proper bottom spacing
             legalStackView.topAnchor.constraint(equalTo: priceDetailsLabel.bottomAnchor, constant: 16),
             legalStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            legalStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+            legalStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            
+            // Add spinner and frosted background constraints
+            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            frostedBackgroundView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            frostedBackgroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            frostedBackgroundView.widthAnchor.constraint(equalToConstant: 100),
+            frostedBackgroundView.heightAnchor.constraint(equalToConstant: 100)
         ])
     }
     
@@ -340,9 +349,10 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         guard !hasSentToGPT else { return }
         hasSentToGPT = true
         
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.frostedBackgroundView.isHidden = false
             self.spinner.startAnimating()
-            self.frostedBackgroundView.isHidden = false   // Show background with spinner
             self.sendOnboardingInfoToGPT()
         }
     }
