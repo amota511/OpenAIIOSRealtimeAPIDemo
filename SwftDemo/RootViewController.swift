@@ -72,6 +72,8 @@ class RootViewController: UIViewController {
         label.text = "2:00"
         label.font = UIFont.boldSystemFont(ofSize: 80)
         label.textAlignment = .center
+        label.textColor = GlobalColors.primaryText
+        label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.5
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
