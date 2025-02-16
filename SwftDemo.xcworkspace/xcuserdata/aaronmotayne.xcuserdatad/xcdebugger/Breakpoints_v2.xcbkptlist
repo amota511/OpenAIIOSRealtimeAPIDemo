@@ -634,6 +634,21 @@
                   endingLineNumber = "541"
                   offsetFromSymbolStart = "1925">
                </Location>
+               <Location
+                  uuid = "D31BC932-9D4B-4A74-9C20-5388C51E2303 - 58c8b35217f79656"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SwftDemo.RealTimeApiWebRTCMainVC.updateSessionToDisableVAD() -&gt; ()"
+                  moduleName = "SwftDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aaronmotayne/Desktop/src/Poof/SwftDemo/RealTimeApiWebRTCMainVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "541"
+                  endingLineNumber = "541"
+                  offsetFromSymbolStart = "1564">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>

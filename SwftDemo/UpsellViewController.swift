@@ -1,6 +1,7 @@
 import UIKit
 import StoreKit
 import RevenueCat
+import WebKit
 
 class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     
@@ -36,7 +37,16 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         let label = UILabel()
         // Using an SF Symbol for a checkmark:
         // "checkmark.circle.fill" or "checkmark.seal.fill," etc.
-        label.text = "✓ No payment due now"
+        label.text = "✓ Daily Goal Tracking"
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var checkMarkLabel2: UILabel = {
+        let label = UILabel()
+        label.text = "✓ Visualize your progress"
         label.font = UIFont.systemFont(ofSize: 16)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -45,7 +55,7 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
     
     private lazy var tryButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Try for $0.00", for: .normal)
+        button.setTitle("Try 3 days free trial", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.backgroundColor = GlobalColors.primaryButton
         button.tintColor = .white
@@ -58,14 +68,14 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
     
     private lazy var priceDetailsLabel: UILabel = {
         let label = UILabel()
-        let fullText = "Just $0.66 per day ($19.99/mo)"
+        let fullText = "$19.99 per month after trial"
         let attributedString = NSMutableAttributedString(string: fullText)
         
         // Set the default color to lightGray
         attributedString.addAttribute(.foregroundColor, value: UIColor.lightGray, range: NSRange(location: 0, length: fullText.count))
         
         // Find the range of "($19.99/mo)" and set it to black
-        if let range = fullText.range(of: "($19.99/mo)") {
+        if let range = fullText.range(of: "$19.99 per month after trial") {
             let nsRange = NSRange(range, in: fullText)
             attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: nsRange)
         }
@@ -95,8 +105,17 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         return button
     }()
     
+    private lazy var eulaButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("EULA", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(showEULA), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var legalStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [termsButton, privacyButton])
+        let stackView = UIStackView(arrangedSubviews: [termsButton, privacyButton, eulaButton])
         stackView.axis = .horizontal
         stackView.spacing = 16
         stackView.distribution = .equalSpacing
@@ -129,6 +148,7 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         view.addSubview(titleLabel)
         view.addSubview(imageView)
         view.addSubview(checkMarkLabel)
+        view.addSubview(checkMarkLabel2)
         view.addSubview(tryButton)
         view.addSubview(priceDetailsLabel)
         view.addSubview(legalStackView)
@@ -209,8 +229,13 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
             checkMarkLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             checkMarkLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
+            // Add constraints for second checkmark label
+            checkMarkLabel2.topAnchor.constraint(equalTo: checkMarkLabel.bottomAnchor, constant: 8),
+            checkMarkLabel2.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            checkMarkLabel2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            
             // "Try" button below check mark
-            tryButton.topAnchor.constraint(equalTo: checkMarkLabel.bottomAnchor, constant: 24),
+            tryButton.topAnchor.constraint(equalTo: checkMarkLabel2.bottomAnchor, constant: 16),
             tryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             tryButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -32),
             tryButton.heightAnchor.constraint(equalToConstant: 48),
@@ -433,7 +458,69 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         present(privacyVC, animated: true)
     }
     
+    @objc private func showEULA() {
+        let webVC = UIViewController()
+        let webView = WKWebView()
+        webView.navigationDelegate = self  // We'll add WKNavigationDelegate
+        webVC.view = webView
+        
+        // Add loading spinner
+        let spinner = UIActivityIndicatorView(style: .medium)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        webVC.view.addSubview(spinner)
+        
+        // Add error label (hidden by default)
+        let errorLabel = UILabel()
+        errorLabel.text = "Failed to load EULA. Please check your internet connection."
+        errorLabel.textAlignment = .center
+        errorLabel.numberOfLines = 0
+        errorLabel.isHidden = true
+        errorLabel.translatesAutoresizingMaskIntoConstraints = false
+        webVC.view.addSubview(errorLabel)
+        
+        NSLayoutConstraint.activate([
+            spinner.centerXAnchor.constraint(equalTo: webVC.view.centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: webVC.view.centerYAnchor),
+            
+            errorLabel.centerXAnchor.constraint(equalTo: webVC.view.centerXAnchor),
+            errorLabel.centerYAnchor.constraint(equalTo: webVC.view.centerYAnchor),
+            errorLabel.leadingAnchor.constraint(equalTo: webVC.view.leadingAnchor, constant: 20),
+            errorLabel.trailingAnchor.constraint(equalTo: webVC.view.trailingAnchor, constant: -20)
+        ])
+        
+        spinner.startAnimating()
+        
+        if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
+            let request = URLRequest(url: url)
+            webView.load(request)
+        }
+        
+        webVC.modalPresentationStyle = .pageSheet
+        webVC.modalTransitionStyle = .coverVertical
+        present(webVC, animated: true)
+    }
+    
     deinit {
         SKPaymentQueue.default().remove(self)
+    }
+}
+
+// MARK: - WKNavigationDelegate
+extension UpsellViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        // Hide spinner when loading completes
+        if let spinner = webView.superview?.subviews.first(where: { $0 is UIActivityIndicatorView }) as? UIActivityIndicatorView {
+            spinner.stopAnimating()
+        }
+    }
+    
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        // Hide spinner and show error message
+        if let spinner = webView.superview?.subviews.first(where: { $0 is UIActivityIndicatorView }) as? UIActivityIndicatorView {
+            spinner.stopAnimating()
+        }
+        if let errorLabel = webView.superview?.subviews.first(where: { $0 is UILabel }) as? UILabel {
+            errorLabel.isHidden = false
+        }
     }
 }
