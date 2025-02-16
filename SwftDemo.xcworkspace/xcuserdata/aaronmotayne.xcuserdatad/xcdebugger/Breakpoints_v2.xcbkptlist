@@ -16,7 +16,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "263"
             endingLineNumber = "263"
-            landmarkName = "viewDidLoad()"
+            landmarkName = "continueAudioMonitoring()"
             landmarkType = "7">
             <Locations>
                <Location
@@ -79,7 +79,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "220"
             endingLineNumber = "220"
-            landmarkName = "continueAudioMonitoring()"
+            landmarkName = "setupAudioSession()"
             landmarkType = "7">
             <Locations>
                <Location
@@ -127,7 +127,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "198"
             endingLineNumber = "198"
-            landmarkName = "setupAudioSession()"
+            landmarkName = "startMonitoringUserAudio()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -143,8 +143,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "271"
             endingLineNumber = "271"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
+            landmarkName = "RootViewController"
+            landmarkType = "3">
             <Locations>
                <Location
                   uuid = "54F19A0A-9B5F-42C8-95E9-83403F6B1C57 - 47413e4696ffa4f7"
@@ -206,7 +206,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "291"
             endingLineNumber = "291"
-            landmarkName = "viewDidLoad()"
+            landmarkName = "handleAudioPermissionDenied()"
             landmarkType = "7">
             <Locations>
                <Location
@@ -284,7 +284,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "217"
             endingLineNumber = "217"
-            landmarkName = "continueAudioMonitoring()"
+            landmarkName = "setupAudioSession()"
             landmarkType = "7">
             <Locations>
                <Location
@@ -332,8 +332,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "242"
             endingLineNumber = "242"
-            landmarkName = "handleAudioPermissionDenied()"
-            landmarkType = "7">
+            landmarkName = "RootViewController"
+            landmarkType = "3">
             <Locations>
                <Location
                   uuid = "F65AAB0E-7BD9-422B-93B4-B9CD9D692A3B - 8e83b6b9f1613b3c"
@@ -380,7 +380,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "237"
             endingLineNumber = "237"
-            landmarkName = "handleAudioPermissionDenied()"
+            landmarkName = "setupAudioSession()"
             landmarkType = "7">
             <Locations>
                <Location
@@ -428,7 +428,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "379"
             endingLineNumber = "379"
-            landmarkName = "clickSessionButton(_:)"
+            landmarkName = "viewDidLayoutSubviews()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -101,6 +101,47 @@ class RootViewController: UIViewController {
     // Add a property for RealTimeApiWebRTCMainVC
     private var realTimeAPI = RealTimeApiWebRTCMainVC()
 
+    // Add this property to track check-ins
+    private struct DailyCheckIn: Codable {
+        let date: Date
+        var summary: String?
+    }
+
+    // Add helper methods for managing check-in state
+    private func saveTodayCheckIn(summary: String? = nil) {
+        let defaults = UserDefaults.standard
+        let today = Calendar.current.startOfDay(for: Date())
+        
+        var checkIns: [DailyCheckIn] = []
+        if let data = defaults.data(forKey: "DailyCheckIns"),
+           let decoded = try? JSONDecoder().decode([DailyCheckIn].self, from: data) {
+            checkIns = decoded
+        }
+        
+        // Remove existing check-in for today if it exists
+        checkIns.removeAll { Calendar.current.isDate($0.date, inSameDayAs: today) }
+        
+        // Add new check-in
+        checkIns.append(DailyCheckIn(date: today, summary: summary))
+        
+        // Save updated check-ins
+        if let encoded = try? JSONEncoder().encode(checkIns) {
+            defaults.set(encoded, forKey: "DailyCheckIns")
+        }
+    }
+
+    private func hasCheckedInToday() -> Bool {
+        let defaults = UserDefaults.standard
+        let today = Calendar.current.startOfDay(for: Date())
+        
+        guard let data = defaults.data(forKey: "DailyCheckIns"),
+              let checkIns = try? JSONDecoder().decode([DailyCheckIn].self, from: data) else {
+            return false
+        }
+        
+        return checkIns.contains { Calendar.current.isDate($0.date, inSameDayAs: today) }
+    }
+
     // Store summarized text in UserDefaults with an existing array, under key "Stories"
     private func storeSummarizedStory(_ summary: String) {
         // Define a new StoryItem
@@ -447,19 +488,20 @@ class RootViewController: UIViewController {
         realTimeAPI.stopAll()
         realTimeAPI.connect_status = "notConnect"
 
-        // Reset timer UI, disable button, etc.
+        // Reset timer UI
         remainingTime = 120
         timerLabel.text = "2:00"
+        
+        // Save check-in without summary initially
+        saveTodayCheckIn()
+        
+        // Update button state
+        updateCheckInButton()
 
-        // Disable the button, set gray
-        startSessionButton.isEnabled = false
-        startSessionButton.backgroundColor = .lightGray
-        startSessionButton.setTitle("Already checked in", for: .normal)
-
-        // Stop visualizer from moving
+        // Stop visualizer
         audioVolumeView.resetCirclesForUserSpeaking()
 
-        // Retrieve and send the conversation for summarizing
+        // Get conversation and summarize
         let conversation = realTimeAPI.conversationHistory.joined(separator: "\n")
         summarizeDailyConversation(conversation)
     }
@@ -489,7 +531,7 @@ class RootViewController: UIViewController {
             request.addValue("Bearer \(openAiApiKey)", forHTTPHeaderField: "Authorization")
             request.httpBody = jsonData
 
-            URLSession.shared.dataTask(with: request) { data, response, error in
+            URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
                 if let error = error {
                     print("Request error: \(error)")
                     return
@@ -506,15 +548,18 @@ class RootViewController: UIViewController {
                         // 1) Print or handle the summarized text 
                         print("OpenAI summarized response:\n\(firstContent)")
 
+                        // Update today's check-in with the summary
+                        self?.saveTodayCheckIn(summary: firstContent)
+
                         // 2) Store it in UserDefaults in "Stories" format
-                        self.storeSummarizedStory(firstContent)
+                        self?.storeSummarizedStory(firstContent)
 
                         // 2) After a successful session, store the lastCheckIn time
                         UserDefaults.standard.set(Date(), forKey: "lastCheckIn")
                         
                         // 3) Re-check the button state on the main thread
                         DispatchQueue.main.async {
-                            self.updateCheckInButton()
+                            self?.updateCheckInButton()
                         }
                     }
                 } catch {
@@ -530,17 +575,15 @@ class RootViewController: UIViewController {
 
     // 1) Factor out the logic to check lastCheckIn
     private func updateCheckInButton() {
-        let defaults = UserDefaults.standard
-        // If there's a last check-in and it's the same calendar day, disable the button
-        // if let lastCheckIn = defaults.object(forKey: "lastCheckIn") as? Date,
-        //    Calendar.current.isDate(lastCheckIn, inSameDayAs: Date()) {
-        //     startSessionButton.isEnabled = false
-        //     startSessionButton.backgroundColor = .lightGray
-        //     startSessionButton.setTitle("Already checked in", for: .normal)
-        //     return
-        // }
+        // First check if user has already checked in today
+        if hasCheckedInToday() {
+            startSessionButton.isEnabled = false
+            startSessionButton.backgroundColor = .lightGray
+            startSessionButton.setTitle("Already checked in", for: .normal)
+            return
+        }
         
-        // Otherwise, choose the button state based on realTimeAPI.connect_status
+        // Otherwise, choose button state based on connection status
         switch realTimeAPI.connect_status {
         case "connecting":
             startSessionButton.isEnabled = false
@@ -550,7 +593,6 @@ class RootViewController: UIViewController {
             startSessionButton.isEnabled = true
             startSessionButton.backgroundColor = .systemRed
             startSessionButton.setTitle("End Session", for: .normal)
-            // Start the timer if it isn't already running
             if sessionTimer == nil {
                 startTimer()
             }
