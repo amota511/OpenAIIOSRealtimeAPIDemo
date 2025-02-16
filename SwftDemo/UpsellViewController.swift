@@ -75,7 +75,7 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         attributedString.addAttribute(.foregroundColor, value: UIColor.lightGray, range: NSRange(location: 0, length: fullText.count))
         
         // Find the range of "($19.99/mo)" and set it to black
-        if let range = fullText.range(of: "$19.99 USDper month after trial") {
+        if let range = fullText.range(of: "$19.99 USD per month after trial") {
             let nsRange = NSRange(range, in: fullText)
             attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: nsRange)
         }
@@ -107,7 +107,7 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
     
     private lazy var eulaButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("EULA", for: .normal)
+        button.setTitle("Terms of Use (EULA)", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(showEULA), for: .touchUpInside)
