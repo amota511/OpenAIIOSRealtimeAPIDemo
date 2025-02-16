@@ -72,6 +72,7 @@ class RootViewController: UIViewController {
         label.text = "2:00"
         label.font = UIFont.boldSystemFont(ofSize: 80)
         label.textAlignment = .center
+        label.minimumScaleFactor = 0.5
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -206,6 +207,8 @@ class RootViewController: UIViewController {
             timerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
             timerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
+        // Bring the timer label to the front so it's not obscured by other subviews
+        view.bringSubviewToFront(timerLabel)
         
         view.addSubview(monitorAudioDataView)
         monitorAudioDataView.addSubview(audioVolumeView)
@@ -213,8 +216,8 @@ class RootViewController: UIViewController {
         NSLayoutConstraint.activate([
             monitorAudioDataView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             monitorAudioDataView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            monitorAudioDataView.widthAnchor.constraint(equalToConstant: 200),
-            monitorAudioDataView.heightAnchor.constraint(equalToConstant: 100)
+            monitorAudioDataView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+            monitorAudioDataView.heightAnchor.constraint(equalTo: monitorAudioDataView.widthAnchor, multiplier: 0.5)
         ])
         
         // Ensure audioVolumeView is centered horizontally and vertically

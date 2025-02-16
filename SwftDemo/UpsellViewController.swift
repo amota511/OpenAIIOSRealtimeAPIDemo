@@ -16,9 +16,11 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         let label = UILabel()
         label.text = "We want you to try Reason.ai for free."
         label.textColor = GlobalColors.highlightText
-        label.numberOfLines = 2
+        label.numberOfLines = 0
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 24)
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.85
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -68,14 +70,14 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
     
     private lazy var priceDetailsLabel: UILabel = {
         let label = UILabel()
-        let fullText = "$19.99 USD per month after trial"
+        let fullText = "Then $19.99 USD per month for full access to Reason.ai"
         let attributedString = NSMutableAttributedString(string: fullText)
         
         // Set the default color to lightGray
         attributedString.addAttribute(.foregroundColor, value: UIColor.lightGray, range: NSRange(location: 0, length: fullText.count))
         
-        // Find the range of "($19.99/mo)" and set it to black
-        if let range = fullText.range(of: "$19.99 USD per month after trial") {
+        // Find the range of "Then $19.99 USD per month for full access to Reason.ai" and set it to black
+        if let range = fullText.range(of: "Then $19.99 USD per month for full access to Reason.ai") {
             let nsRange = NSRange(range, in: fullText)
             attributedString.addAttribute(.foregroundColor, value: UIColor.black, range: nsRange)
         }
@@ -83,6 +85,7 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
         label.attributedText = attributedString
         label.font = UIFont.systemFont(ofSize: 14)
         label.textAlignment = .center
+        label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -183,7 +186,8 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
             frostedBackgroundView.widthAnchor.constraint(equalToConstant: 100),
             frostedBackgroundView.heightAnchor.constraint(equalToConstant: 100),
             legalStackView.topAnchor.constraint(equalTo: priceDetailsLabel.bottomAnchor, constant: 16),
-            legalStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            legalStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            legalStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
         
         frostedBackgroundView.isHidden = true  // Hide background by default
@@ -213,37 +217,42 @@ class UpsellViewController: UIViewController, SKProductsRequestDelegate, SKPayme
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            // Title at the top
+            // Title at the top with proper spacing
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
-            // Image below title, 60% height
+            // Reduce image height to make room for other elements
             imageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6),
+            imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.55), // Reduced from 0.6
             
-            // Check mark label below image
+            // First checkmark with proper spacing
             checkMarkLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 16),
             checkMarkLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             checkMarkLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
-            // Add constraints for second checkmark label
+            // Second checkmark with proper spacing
             checkMarkLabel2.topAnchor.constraint(equalTo: checkMarkLabel.bottomAnchor, constant: 8),
             checkMarkLabel2.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             checkMarkLabel2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
-            // "Try" button below check mark
-            tryButton.topAnchor.constraint(equalTo: checkMarkLabel2.bottomAnchor, constant: 16),
+            // Try button with adjusted spacing
+            tryButton.topAnchor.constraint(equalTo: checkMarkLabel2.bottomAnchor, constant: 24),
             tryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             tryButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -32),
             tryButton.heightAnchor.constraint(equalToConstant: 48),
             
-            // Small price label below the button
-            priceDetailsLabel.topAnchor.constraint(equalTo: tryButton.bottomAnchor, constant: 8),
+            // Price details with proper spacing
+            priceDetailsLabel.topAnchor.constraint(equalTo: tryButton.bottomAnchor, constant: 12),
             priceDetailsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            priceDetailsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
+            priceDetailsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            
+            // Legal stack view with proper bottom spacing
+            legalStackView.topAnchor.constraint(equalTo: priceDetailsLabel.bottomAnchor, constant: 16),
+            legalStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            legalStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
     
